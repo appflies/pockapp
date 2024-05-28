@@ -5,10 +5,13 @@ import {
   Image,
   TextInput,
   FlatList,
-  TouchableHighlight
+  TouchableHighlight,
+  TouchableOpacity,
+  Button
 } from "react-native";
 import { PaymentIcon, ConfigIcon } from "../../assets/images";
 import { SafeAreaView } from "react-native-safe-area-context";
+import React, { useState } from 'react';
 
 type ItemData = {
   id: number;
@@ -86,44 +89,46 @@ const renderItem = ({ item }: { item: ItemData }) => {
 };
 
 const Item = ({ item }: ItemProps) => (
-  <View className="mt-4">
-    <Text className="text-custom-bold" style={styles.poppinsSemiBold}>
-      {item.name}
-    </Text>
-    <View className="flex-row justify-between">
-      <View className="flex-row">
+      <View className="mt-4">
+      <TouchableOpacity>
+        <Text className="text-custom-bold" style={styles.poppinsSemiBold}>
+          {item.name}
+        </Text>
+        <View className="flex-row justify-between">
+          <View className="flex-row">
+            <Text
+              className="text-custom-text mr-1"
+              style={styles.montserratSemiBold}
+            >
+              Ticket ID: {item.ticketID} /
+            </Text>
+            <Text
+              className="text-custom-text mr-1"
+              style={styles.montserratRegularCustom}
+            >
+              {item.date}
+            </Text>
+            <Text
+              className="text-custom-text"
+              style={styles.montserratRegularCustom}
+            >
+              {item.time}
+            </Text>
+          </View>
+
+          <Text className="text-custom-bold" style={styles.poppinsSemiBold}>
+            {item.amount}
+          </Text>
+        </View>
+
         <Text
-          className="text-custom-text mr-1"
+          className="mt-[-10px] text-custom-text"
           style={styles.montserratSemiBold}
         >
-          Ticket ID: {item.ticketID} /
+          Mesa: {item.table}
         </Text>
-        <Text
-          className="text-custom-text mr-1"
-          style={styles.montserratRegularCustom}
-        >
-          {item.date}
-        </Text>
-        <Text
-          className="text-custom-text"
-          style={styles.montserratRegularCustom}
-        >
-          {item.time}
-        </Text>
+        </TouchableOpacity>
       </View>
-
-      <Text className="text-custom-bold" style={styles.poppinsSemiBold}>
-        {item.amount}
-      </Text>
-    </View>
-
-    <Text
-      className="mt-[-10px] text-custom-text"
-      style={styles.montserratSemiBold}
-    >
-      Mesa: {item.table}
-    </Text>
-  </View>
 );
 
 const Payment = () => {
@@ -183,11 +188,11 @@ const Payment = () => {
                     ></TextInput>
                   </View>
 
-                  <TouchableHighlight>
+                  <TouchableOpacity>
                      <View className="ml-3">
                         <ConfigIcon />
                      </View>
-                  </TouchableHighlight>
+                  </TouchableOpacity>
               </View>
             </View>
 

@@ -1,4 +1,8 @@
-import { View, Text } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View
+} from "react-native";
 
 const Index = () => {
     return (
