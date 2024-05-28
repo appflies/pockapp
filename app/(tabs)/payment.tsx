@@ -5,6 +5,7 @@ import {
   Image,
   TextInput,
   FlatList,
+  TouchableHighlight
 } from "react-native";
 import { PaymentIcon, ConfigIcon } from "../../assets/images";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -160,29 +161,33 @@ const Payment = () => {
                 <Image source={require("../../assets/images/line.png")} />
               </View>
 
-              <View
-                className="flex-row items-center p-2 bg-[#FFFFFF] mx-auto mt-[20px]"
-                style={{
-                  width: 286,
-                  height: 50,
-                  borderRadius: 50,
-                  borderWidth: 1,
-                  borderColor: "#CECECE",
-                }}
-              >
-                <Image
-                  source={require("../../assets/images/search.png")}
-                  className="ml-2 w-5 h-5"
-                />
-                <TextInput
-                  placeholder="Buscar nombre, teléfono o cupón"
-                  placeholderTextColor="#686881"
-                  className="border-none outline-none ml-2 mr-10"
-                ></TextInput>
-                <Image
-                  source={require("../../assets/images/config.png")}
-                  className="ml-2"
-                />
+              <View className="flex-row justify-center items-center pt-4">
+                  <View
+                    className="flex-row items-center p-2 bg-[#FFFFFF]"
+                    style={{
+                      width: 286,
+                      height: 50,
+                      borderRadius: 50,
+                      borderWidth: 1,
+                      borderColor: "#CECECE",
+                    }}
+                  >
+                    <Image
+                      source={require("../../assets/images/search.png")}
+                      className="ml-2 w-5 h-5"
+                    />
+                    <TextInput
+                      placeholder="Buscar nombre, teléfono o cupón"
+                      placeholderTextColor="#686881"
+                      className="border-none outline-none ml-2 mr-10"
+                    ></TextInput>
+                  </View>
+
+                  <TouchableHighlight>
+                     <View className="ml-3">
+                        <ConfigIcon />
+                     </View>
+                  </TouchableHighlight>
               </View>
             </View>
 
