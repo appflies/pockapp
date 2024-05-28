@@ -1,0 +1,9 @@
+{
+  "icon": true,
+  "expandProps": true,
+  "replaceAttrValues": {
+    "#999999": "{props.stroke}",
+    "#000000": "{props.stroke}",
+    "width": "{props.width}"
+  }
+}

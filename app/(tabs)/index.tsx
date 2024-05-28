@@ -3,7 +3,7 @@ import { View, Text } from "react-native";
 const Index = () => {
     return (
         <View>
-            <Text>Home</Text>
+            <Text className="text-white">Home</Text>
         </View>
     )
 }
