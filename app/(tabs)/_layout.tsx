@@ -1,12 +1,6 @@
 import { Tabs } from "expo-router";
 import { View, Text } from "react-native";
-import {
-HomeIcon,
-PaymentIcon,
-CouponIcon,
-FeedbackIcon,
-DashboardIcon
-} from "../../assets/images";
+import { icons } from "@/constants";
 
 export default function Layout() {
     return (
@@ -34,7 +28,7 @@ export default function Layout() {
                             alignItems: "center",
                             paddingtop: 10
                         }}>
-                            <HomeIcon
+                            <icons.home
                                 stroke={focused ? "#000000" : "#999999"}
                             />
                         </View>
@@ -42,14 +36,14 @@ export default function Layout() {
                 }}
             />
             <Tabs.Screen
-                name="payment"
+                name="orders"
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <View style={{
                             alignItems: "center",
                             paddingtop: 10
                         }}>
-                            <PaymentIcon
+                            <icons.orders
                                 stroke={focused ? "#000000" : "#999999"}
                             />
                         </View>
@@ -64,7 +58,7 @@ export default function Layout() {
                             alignItems: "center",
                             paddingtop: 10
                         }}>
-                            <CouponIcon
+                            <icons.coupon
                                 stroke={focused ? "#000000" : "#999999"}
                             />
                         </View>
@@ -79,7 +73,7 @@ export default function Layout() {
                             alignItems: "center",
                             paddingtop: 10
                         }}>
-                            <FeedbackIcon
+                            <icons.feedback
                                 stroke={focused ? "#000000" : "#999999"}
                             />
                         </View>
@@ -87,14 +81,14 @@ export default function Layout() {
                 }}
             />
             <Tabs.Screen
-                name="dashboard"
+                name="settings"
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <View style={{
                             alignItems: "center",
                             paddingtop: 10
                         }}>
-                            <DashboardIcon
+                            <icons.settings
                                 stroke={focused ? "#000000" : "#999999"}
                             />
                         </View>

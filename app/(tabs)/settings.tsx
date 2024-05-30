@@ -1,6 +1,6 @@
 import { View, Text } from "react-native";
 
-const Dashboard = () => {
+const Settings = () => {
     return (
         <View>
             <Text>Dashboard</Text>
@@ -8,4 +8,4 @@ const Dashboard = () => {
     )
 }
 
-export default Dashboard;
+export default Settings;
