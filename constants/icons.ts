@@ -10,6 +10,8 @@ import magnify from "../assets/icons/magnify.svg";
 import user_square from "../assets/icons/user_square";
 import call from "../assets/icons/call.svg";
 import whatsapp from "../assets/icons/whatsapp.svg";
+import star_filled from "../assets/icons/star_filled.png";
+import star_unfilled from "../assets/icons/star_unfilled.png";
 
 export default {
     home,
@@ -23,5 +25,7 @@ export default {
     magnify,
     user_square,
     call,
-    whatsapp
+    whatsapp,
+    star_filled,
+    star_unfilled
 };

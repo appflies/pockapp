@@ -10,7 +10,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { icons, images } from "@/constants";
 import { CouponDto, CouponData } from "../_actions/coupons/getCoupons";
-import { AirbnbRating } from 'react-native-ratings';
+import  Rating from 'react-native-easy-rating';
 
 type CouponProps = {
   item: CouponDto;
@@ -33,15 +33,15 @@ const Item = ({ item }: CouponProps) => (
             </Text>
           </View>
 
-          <Text className="mt-[-20px]">
-            <AirbnbRating
-              count={3}
-              defaultRating={item.review}
-              size={20}
-              showRating={false}
-              isDisabled={true}
-            />
-          </Text>
+          <View className="mt-[-20px]">
+            <Rating
+              rating={3}
+              max={3}
+              iconWidth={24}
+              iconHeight={24}
+              iconSelected={icons.star_filled}
+             />
+          </View>
         </View>
         </TouchableOpacity>
       </View>

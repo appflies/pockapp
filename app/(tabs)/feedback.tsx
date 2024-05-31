@@ -5,7 +5,7 @@ import {
   TextInput,
   FlatList,
   TouchableHighlight,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { icons, images } from "@/constants";
@@ -21,7 +21,6 @@ const renderFeedback = ({ item }: { item: FeedbackDto }) => {
 
 const Item = ({ item }: OrderProps) => (
       <View className="mt-4">
-      <TouchableOpacity>
         <Text className="text-secondary-100 font-posemibold text-[16px]">
           {item.name}
         </Text>
@@ -38,16 +37,15 @@ const Item = ({ item }: OrderProps) => (
             </Text>
           </View>
 
-          <Text className="text-secondary-100 font-posemibold text-[16px]">
-            REDIMIR
-          </Text>
+          <TouchableOpacity>
+            <Text className="text-secondary-100 font-posemibold text-[16px]">REDIMIR</Text>
+          </TouchableOpacity>
         </View>
 
         <Text
           className="mt-[-10px] text-primary font-mosemibold text-[11px]">
           ORDEN {item.order}
         </Text>
-        </TouchableOpacity>
       </View>
 );
 
