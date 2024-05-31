@@ -28,24 +28,24 @@ const Item = ({ item }: OrderProps) => (
         </Text>
         <View className="flex-row justify-between">
           <View className="flex-row">
-            <Text className="text-primary mr-1 font-mosemibold text-[11px]">
+            <Text className="text-primary mr-1 font-mosemibold text-[11px] mt-[-4px]">
               Ticket ID: {item.ticketID} /
             </Text>
-            <Text className="text-primary mr-1 font-moregular text-[11px]">
+            <Text className="text-primary mr-1 font-moregular text-[11px] mt-[-4px]">
               {item.date}
             </Text>
-            <Text className="text-primary font-moregular text-[11px]">
+            <Text className="text-primary font-moregular text-[11px] mt-[-4px]">
               {item.time}
             </Text>
           </View>
 
-          <Text className="text-secondary-100 font-posemibold text-[16px]">
+          <Text className="text-secondary-100 font-posemibold text-[16px] mt-[-8px]">
             {item.amount}
           </Text>
         </View>
 
         <Text
-          className="mt-[-10px] text-primary font-mosemibold text-[11px]">
+          className="mt-[-6px] text-primary font-mosemibold text-[11px]">
           Mesa: {item.table}
         </Text>
         </TouchableOpacity>

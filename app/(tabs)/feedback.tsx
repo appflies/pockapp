@@ -25,11 +25,11 @@ const Item = ({ item }: OrderProps) => (
           {item.name}
         </Text>
         <View className="flex-row justify-between">
-          <View className="flex-row">
-            <Text className="text-primary mr-1 font-mosemibold text-[11px]">
+          <View className="flex-row mt-[-3px]">
+            <Text className="text-primary mr-1 font-posemibold text-[11px]">
               {item.ticketID}
             </Text>
-            <Text className="text-primary mr-1 font-moregular text-[11px]">
+            <Text className="text-primary mr-1 font-poregular text-[11px]">
               {item.date}
             </Text>
             <Text className="text-primary font-moregular text-[11px]">
@@ -38,12 +38,12 @@ const Item = ({ item }: OrderProps) => (
           </View>
 
           <TouchableOpacity>
-            <Text className="text-secondary-100 font-posemibold text-[16px]">REDIMIR</Text>
+            <Text className="text-black font-posemibold text-[16px] mt-[-10px]">REDIMIR</Text>
           </TouchableOpacity>
         </View>
 
         <Text
-          className="mt-[-10px] text-primary font-mosemibold text-[11px]">
+          className="mt-[-2px] text-primary font-mosemibold text-[11px]">
           ORDEN {item.order}
         </Text>
       </View>

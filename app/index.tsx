@@ -17,14 +17,14 @@ export default function Welcome() {
     }, []);
 
     if (redirect) {
-        return <Redirect href="/home" />;
+        return <Redirect href="/sign-in" />;
     }
 
     return (
         <SafeAreaView className="bg-black h-full w-full">
-        <View className="flex-1 items-center justify-center">
-            <images.splash width={218} height={218} />
-        </View>
+            <View className="flex-1 items-center justify-center">
+                <images.splash width={218} height={218} />
+            </View>
         </SafeAreaView>
     );
 }
