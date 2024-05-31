@@ -11,6 +11,8 @@ import react from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Entypo from '@expo/vector-icons/Entypo';
 import { images } from "@/constants";
+import CustomButton from "@/components/customButton";
+import { Redirect, router} from "expo-router";
 
 export default function SignIn() {
     return (
@@ -54,9 +56,15 @@ export default function SignIn() {
                     </View>
                 </View>
 
-                <View className="flex items-center mt-6">
+                <TouchableOpacity className="flex items-center mt-6">
                     <Text className="font-poregular">Olvidaste la contraseña?</Text>
-                </View>
+                </TouchableOpacity>
+
+                <CustomButton
+                    title="Iniciar Sesión"
+                    handlePress={() => router.push('/orders')}
+                    containerStyles={"w-[90%] mt-6 mx-auto"}
+                />
             </View>
         </SafeAreaView>
     );
