@@ -1,3 +1,4 @@
 import line from "../assets/images/line.png";
+import splash from "../assets/images/splash.svg";
 
-export default { line }
+export default { line, splash }

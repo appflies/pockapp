@@ -4,7 +4,7 @@ import {
   View
 } from "react-native";
 
-const Index = () => {
+const Home = () => {
     return (
         <View>
             <Text className="text-white">Home</Text>
@@ -12,4 +12,4 @@ const Index = () => {
     )
 }
 
-export default Index;
+export default Home;
