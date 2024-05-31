@@ -1,68 +1,62 @@
-type OrderDto = {
+type FeedbackDto = {
   id: number;
   name: string;
-  amount: any;
   ticketID: any;
   date: any;
   time: any;
-  table: any;
+  order: any;
 };
 
-const OrderData: OrderDto[] = [
+const FeedbackData: FeedbackDto[] = [
   {
     id: 1,
     name: "Carla Montoya",
-    amount: "$56.00",
-    ticketID: "2245",
+    ticketID: "7254-4212",
     date: "05/12/2022",
     time: "1:58 PM",
-    table: "T4",
+    order: "Q1231",
   },
   {
     id: 2,
     name: "Misael Gutierrez",
-    amount: "$12.00",
-    ticketID: "2245",
+    ticketID: "7254-4212",
     date: "05/12/2022",
     time: "1:58 PM",
-    table: "T4",
+    order: "Q1231",
   },
   {
     id: 3,
     name: "Mario Aguilar",
-    amount: "$20.00",
-    ticketID: "2245",
+    ticketID: "7254-4212",
     date: "05/12/2022",
     time: "1:58 PM",
-    table: "T4",
+    order: "Q1231",
   },
   {
     id: 4,
     name: "Katia Herrera",
-    amount: "$34.00",
-    ticketID: "2245",
+    ticketID: "7254-4212",
     date: "05/12/2022",
     time: "1:58 PM",
-    table: "T4",
+    order: "Q1231",
   },
   {
     id: 5,
     name: "Angel Paz",
-    amount: "$89.00",
-    ticketID: "2245",
+    ticketID: "7254-4212",
     date: "05/12/2022",
     time: "1:58 PM",
-    table: "T4",
+    order: "Q1231",
   },
   {
     id: 6,
     name: "Gabriel Perez",
     amount: "$15.00",
-    ticketID: "2245",
+    ticketID: "7254-4212",
     date: "05/12/2022",
     time: "1:58 PM",
-    table: "T4",
+    order: "Q1231",
   },
 ];
 
-export { OrderData, OrderDto };
+export { FeedbackData, FeedbackDto };
