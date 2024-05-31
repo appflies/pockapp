@@ -56,7 +56,9 @@ export default function SignIn() {
                     </View>
                 </View>
 
-                <TouchableOpacity className="flex items-center mt-6">
+                <TouchableOpacity
+                    onPress={() => router.push('/password-reset')}
+                    className="flex items-center mt-6">
                     <Text className="font-poregular">Olvidaste la contraseña?</Text>
                 </TouchableOpacity>
 
