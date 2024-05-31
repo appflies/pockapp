@@ -2,7 +2,7 @@ import { Tabs } from "expo-router";
 import { View, Text } from "react-native";
 import { icons } from "@/constants";
 
-export default function Layout() {
+export default function TabsLayout() {
     return (
         <Tabs screenOptions={{
             headerShown: false,
