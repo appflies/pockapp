@@ -24,22 +24,37 @@ export default function PasswordReset() {
                       <Entypo name="chevron-left" size={30} color="black" />
                   </TouchableOpacity>
                   <Text className="color-black text-[20px] ml-2 font-posemibold">
-                    Olvidaste la contraseña
+                    Olvidaste tu contraseña?
                   </Text>
                 </View>
 
-                <View className="p-3 bg-[#FFFFFF] border border-inputborder rounded-[50px] w-[90%] mt-6 mx-auto">
+                <View className="flex-row p-3 bg-[#FFFFFF] border border-inputborder rounded-[50px] w-[90%] mt-6 mx-auto">
+                    <View className="ml-2">
+                        <Entypo name="mail" size={30} color="black" />
+                    </View>
+
                     <TextInput
-                      placeholder="Ingresa tu correo"
+                      placeholder="Introduzca su correo electrónico"
                       placeholderTextColor="#979797"
-                      className="border-none outline-none ml-2 mr-10 font-pomedium"
+                      className="border-none outline-none ml-2 mr-2 font-pomedium w-[100%]"
                     ></TextInput>
+                </View>
+
+                <View className="mt-6 w-[80%] mx-auto">
+                    <View>
+                        <Text className="text-secondary-300 font-moregular text-[12px]">
+                            * Le enviaremos un mensaje para que
+                        </Text>
+                        <Text className="text-secondary-300 font-moregular text-[12px]">
+                            establezca o restablezca su nueva contraseña
+                        </Text>
+                    </View>
                 </View>
 
                 <CustomButton
                     title="Cambiar contraseña"
                     handlePress={() => router.push('/password-updated')}
-                    containerStyles={"w-[90%] mt-6 mx-auto"}
+                    containerStyles={"w-[90%] mt-7 mx-auto"}
                 />
             </View>
         </SafeAreaView>

@@ -8,7 +8,8 @@ module.exports = {
         secondary: {
             DEFAULT: "#686881",
             100: "#505470",
-            200: "#343434"
+            200: "#343434",
+            300: "#676767"
         },
         inputborder: "#CECECE",
       },

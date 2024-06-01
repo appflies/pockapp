@@ -1,18 +1,14 @@
-import {
-  StyleSheet,
-  Text,
-  View
-} from "react-native";
+import { View, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const Home = () => {
+const Settings = () => {
     return (
         <SafeAreaView>
             <View>
-                <Text className="text-white">Home</Text>
+                <Text>Dashboard</Text>
             </View>
         </SafeAreaView>
     )
 }
 
-export default Home;
+export default Settings;

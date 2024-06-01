@@ -81,14 +81,14 @@ export default function TabsLayout() {
                 }}
             />
             <Tabs.Screen
-                name="settings"
+                name="dashboard"
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <View style={{
                             alignItems: "center",
                             paddingtop: 10
                         }}>
-                            <icons.settings
+                            <icons.dashboard
                                 stroke={focused ? "#000000" : "#999999"}
                             />
                         </View>
