@@ -11,6 +11,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { icons, images } from "@/constants";
 import { CouponDto, CouponData } from "../_actions/coupons/getCoupons";
 import  Rating from 'react-native-easy-rating';
+import SearchBar from "@/components/searchBar";
 
 type CouponProps = {
   item: CouponDto;
@@ -62,32 +63,8 @@ export default function Coupon() {
               </View>
             </View>
 
-            {/* SearchBARContainer */}
-            <View className="h-[130px] px-4 bg-white rounded-tl-[24px] rounded-tr-[24px]">
-              {/* SearchBAR */}
-              <View className="flex justify-center items-center mt-4">
-                <Image source={images.line} />
-              </View>
+            <SearchBar />
 
-              <View className="flex-row justify-center items-center pt-4">
-                  <View className="flex-row items-center p-2 bg-[#FFFFFF] border border-inputborder rounded-[50px]">
-                    <View className="ml-2"><icons.magnify /></View>
-                    <TextInput
-                      placeholder="Buscar nombre, teléfono o cupón"
-                      placeholderTextColor="#686881"
-                      className="border-none outline-none ml-2 mr-10"
-                    ></TextInput>
-                  </View>
-
-                  <TouchableOpacity>
-                     <View className="ml-3">
-                        <icons.filter width={30}/>
-                     </View>
-                  </TouchableOpacity>
-              </View>
-            </View>
-
-            {/* PROCESSED ORDERS */}
             <View className="flex justify-center items-center mt-5">
                 <View className="border-custom-border mb-8 mt-[-33px] bg-[#F7F8FA] w-full text-center h-[54px] flex items-center justify-center" >
                   <Text className="text-secondary-100 font-mobold">ORDENES PROCESADAS</Text>

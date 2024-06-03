@@ -32,12 +32,12 @@ export default function PasswordUpdated() {
             </View>
 
             <View className="flex items-center mt-10">
-                <Text className="font-pomedium text-[16px]">¡Contraseña actualizada con éxito!</Text>
+                <Text className="font-pomedium text-[16px]">¡Te hemos enviado un correo!</Text>
                 <Text className="text-center font-poregular text-[13px] text-secondary-200 mt-4">
-                    Ha cambiado correctamente su contraseña.
+                   Ingresa al link en el correo para poder
                 </Text>
                 <Text className="text-center font-poregular text-[13px] text-secondary-200">
-                    Utilice la nueva contraseña para iniciar sesión.
+                   restablecer tu contraseña
                 </Text>
             </View>
 

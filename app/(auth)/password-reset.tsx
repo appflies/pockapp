@@ -3,17 +3,23 @@ import {
   View,
   Image,
   TextInput,
+  TextInputProps,
   FlatList,
   TouchableHighlight,
   TouchableOpacity
 } from "react-native";
-import react from "react";
+import React, { useState } from 'react';
 import { SafeAreaView } from "react-native-safe-area-context";
 import Entypo from '@expo/vector-icons/Entypo';
 import { Redirect, router} from "expo-router";
 import CustomButton from "@/components/customButton";
 
 export default function PasswordReset() {
+    const [isEyeOff, setIsEyeOff] = useState(false);
+
+    const handlePress = () => {
+        setIsEyeOff(!isEyeOff);
+    };
     return (
         <SafeAreaView className="h-full w-full bg-white">
             <View>
@@ -24,31 +30,25 @@ export default function PasswordReset() {
                       <Entypo name="chevron-left" size={30} color="black" />
                   </TouchableOpacity>
                   <Text className="color-black text-[20px] ml-2 font-posemibold">
-                    Olvidaste tu contraseña?
+                    Olvidaste la contraseña
                   </Text>
                 </View>
 
-                <View className="flex-row p-3 bg-[#FFFFFF] border border-inputborder rounded-[50px] w-[90%] mt-6 mx-auto">
-                    <View className="ml-2">
-                        <Entypo name="mail" size={30} color="black" />
-                    </View>
+                <Text className="ml-8 mt-6 text-secondary-500">Escriba correo de la cuenta</Text>
 
+                <View className="flex-row p-2 bg-[#FFFFFF] border border-inputborder rounded-[50px] w-[90%] mt-4 mx-auto">
                     <TextInput
-                      placeholder="Introduzca su correo electrónico"
+                      placeholder="************"
                       placeholderTextColor="#979797"
-                      className="border-none outline-none ml-2 mr-2 font-pomedium w-[100%]"
+                      secureTextEntry={!isEyeOff}
+                      className="border-none outline-none ml-4 mr-2 mt-1 font-pomedium w-[80%]"
                     ></TextInput>
-                </View>
 
-                <View className="mt-6 w-[80%] mx-auto">
-                    <View>
-                        <Text className="text-secondary-300 font-moregular text-[12px]">
-                            * Le enviaremos un mensaje para que
-                        </Text>
-                        <Text className="text-secondary-300 font-moregular text-[12px]">
-                            establezca o restablezca su nueva contraseña
-                        </Text>
-                    </View>
+                    <TouchableOpacity onPress={handlePress}>
+                        <View className="mt-1">
+                            <Entypo name={isEyeOff ? "eye" : "eye-with-line"} size={24} color="grey" />
+                        </View>
+                    </TouchableOpacity>
                 </View>
 
                 <CustomButton
