@@ -11,7 +11,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { icons, images } from "@/constants";
 import { CouponDto, CouponData } from "../_actions/coupons/getCoupons";
 import  Rating from 'react-native-easy-rating';
-import SearchBar from "@/components/searchBar";
+import SearchBar from "@/components/SearchBar";
 
 type CouponProps = {
   item: CouponDto;

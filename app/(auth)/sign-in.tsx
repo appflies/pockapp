@@ -7,14 +7,32 @@ import {
   TouchableHighlight,
   TouchableOpacity
 } from "react-native";
-import react from "react";
+import react, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Entypo from '@expo/vector-icons/Entypo';
 import { images, icons } from "@/constants";
-import CustomButton from "@/components/customButton";
+import CustomButton from "@/components/CustomButton";
 import { Redirect, router} from "expo-router";
+import axios from "axios";
 
 export default function SignIn() {
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+
+    const handleSubmit = () => {
+        const data = {
+            "usuario": username,
+            "password": password
+        };
+
+        axios.post("https://nicoservices.clobitech.com/usuarios/login", data, {
+            headers: {'Content-type': 'application/json; charset=UTF-8'}
+        })
+        .then(response => console.log(response.data))
+        .catch(err => console.log(err.response.data));
+    };
+
     return (
         <SafeAreaView className="h-full flex-1">
             <View className="h-[95px] w-full bg-black">
@@ -37,6 +55,7 @@ export default function SignIn() {
                 <View className="mt-10 w-[90%] mx-auto">
                     <View className="p-3 bg-[#FFFFFF] border border-inputborder rounded-[50px]">
                         <TextInput
+                          onChangeText={setUsername}
                           placeholder="Usuario"
                           placeholderTextColor="#686881"
                           className="border-none outline-none ml-2 mr-10 font-pomedium"
@@ -45,6 +64,7 @@ export default function SignIn() {
 
                     <View className="p-3 bg-[#FFFFFF] border border-inputborder rounded-[50px] mt-6">
                         <TextInput
+                          onChangeText={setPassword}
                           placeholder="Contraseña"
                           placeholderTextColor="#686881"
                           secureTextEntry={true}
@@ -63,7 +83,7 @@ export default function SignIn() {
 
                 <CustomButton
                     title="Iniciar Sesión"
-                    handlePress={() => router.push('/orders')}
+                    handlePress={handleSubmit}
                     containerStyles={"w-[90%] mt-6 mx-auto"}
                 />
             </View>

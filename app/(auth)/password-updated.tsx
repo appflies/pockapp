@@ -12,7 +12,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Entypo from '@expo/vector-icons/Entypo';
 import { Redirect, router} from "expo-router";
 import { images } from "@/constants";
-import CustomButton from "@/components/customButton";
+import CustomButton from "@/components/CustomButton";
 
 export default function PasswordUpdated() {
     return (

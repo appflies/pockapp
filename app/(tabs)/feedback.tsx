@@ -10,7 +10,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { icons, images } from "@/constants";
 import { FeedbackDto, FeedbackData } from "../_actions/feedback/getFeedback";
-import SearchBar from "@/components/searchBar";
+import SearchBar from "@/components/SearchBar";
 
 type FeedbackProps = {
   item: FeedbackDto;

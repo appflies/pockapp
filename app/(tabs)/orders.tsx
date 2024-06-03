@@ -11,7 +11,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useState } from 'react';
 import { icons, images } from "@/constants";
 import { OrderDto, OrderData } from "../_actions/orders/getOrders";
-import SearchBar from "@/components/searchBar";
+import SearchBar from "@/components/SearchBar";
+import TitleBar from "@/components/TitleBar";
 
 type OrderProps = {
   item: OrderDto;
@@ -57,18 +58,7 @@ const Item = ({ item }: OrderProps) => (
 export default function Orders() {
     return (
         <SafeAreaView className="h-full flex-1">
-            <View className="h-[95px] w-full bg-black">
-              <View className="flex-row pt-11 mr-5 justify-between items-center">
-                <View className="ml-10"><icons.logo width={30} height={30}/></View>
-                <View className="flex-row items-center">
-                  <icons.dollar_circle width={23} />
-                  <Text className="color-white text-[16px] ml-2 font-mosemibold">
-                    Link de pago
-                  </Text>
-                </View>
-              </View>
-            </View>
-
+            <TitleBar icon={<icons.logo width={30} height={30}/>} />
             <SearchBar />
 
             <View className="flex justify-center items-center mt-5">
