@@ -12,7 +12,8 @@ module.exports = {
             300: "#676767",
             400: "#181818",
             500: "#979797",
-            600: "#ECECEC"
+            600: "#ECECEC",
+            700: "#FF0000"
         },
         inputborder: "#CECECE",
       },

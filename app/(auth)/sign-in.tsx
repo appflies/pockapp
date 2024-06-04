@@ -1,36 +1,47 @@
 import {
   Text,
   View,
-  Image,
   TextInput,
-  FlatList,
-  TouchableHighlight,
   TouchableOpacity
 } from "react-native";
-import react, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Entypo from '@expo/vector-icons/Entypo';
 import { images, icons } from "@/constants";
 import CustomButton from "@/components/CustomButton";
-import { Redirect, router} from "expo-router";
-import axios from "axios";
+import { useSigninMutation } from "@/services/auth.service";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/states/userSlice";
+import { router } from "expo-router";
 
 export default function SignIn() {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
+     const dispatch = useDispatch();
+     const [signin] = useSigninMutation();
+     const [username, setUsername] = useState("");
+     const [password, setPassword] = useState("");
+     const [error, setError] = useState("");
 
-    const handleSubmit = () => {
-        const data = {
-            "usuario": username,
-            "password": password
-        };
+     const handleUserChange = (e: string) => {
+        setUsername(e);
+        setError("");
+     };
 
-        axios.post("https://nicoservices.clobitech.com/usuarios/login", data, {
-            headers: {'Content-type': 'application/json; charset=UTF-8'}
-        })
-        .then(response => console.log(response.data))
-        .catch(err => console.log(err.response.data));
+     const handlePasswordChange = (e: string) => {
+        setPassword(e);
+        setError("");
+     };
+
+     const handleSubmit = async () => {
+        try {
+            const user = await signin({
+                usuario: username,
+                password: password
+            }).unwrap();
+            dispatch(setUser(user));
+            setError("");
+            router.push('/home');
+        } catch (err) {
+            setError(err.data.error || "Error al iniciar sesión");
+        }
     };
 
     return (
@@ -55,7 +66,7 @@ export default function SignIn() {
                 <View className="mt-10 w-[90%] mx-auto">
                     <View className="p-3 bg-[#FFFFFF] border border-inputborder rounded-[50px]">
                         <TextInput
-                          onChangeText={setUsername}
+                          onChangeText={handleUserChange}
                           placeholder="Usuario"
                           placeholderTextColor="#686881"
                           className="border-none outline-none ml-2 mr-10 font-pomedium"
@@ -64,7 +75,7 @@ export default function SignIn() {
 
                     <View className="p-3 bg-[#FFFFFF] border border-inputborder rounded-[50px] mt-6">
                         <TextInput
-                          onChangeText={setPassword}
+                          onChangeText={handlePasswordChange}
                           placeholder="Contraseña"
                           placeholderTextColor="#686881"
                           secureTextEntry={true}
@@ -72,6 +83,12 @@ export default function SignIn() {
                         ></TextInput>
                     </View>
                 </View>
+
+                {error ? (
+                    <View className="mx-auto mt-2">
+                    <Text className="text-secondary-700 text-[12px]">{error}</Text>
+                    </View>
+                ) : null}
 
                 <View className="w-[94%]">
                     <TouchableOpacity
@@ -81,11 +98,11 @@ export default function SignIn() {
                     </TouchableOpacity>
               </View>
 
-                <CustomButton
-                    title="Iniciar Sesión"
-                    handlePress={handleSubmit}
-                    containerStyles={"w-[90%] mt-6 mx-auto"}
-                />
+              <CustomButton
+                  title="Iniciar Sesión"
+                  handlePress={handleSubmit}
+                  containerStyles={"w-[90%] mt-6 mx-auto"}
+              />
             </View>
         </SafeAreaView>
     );
