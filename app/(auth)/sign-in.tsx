@@ -47,8 +47,8 @@ export default function SignIn() {
     return (
         <SafeAreaView className="h-full flex-1">
             <View className="h-[95px] w-full bg-black">
-              <View className="flex-row items-center justify-between pt-11 px-5">
-                <View className="ml-2"><icons.logo width={30} height={30}/></View>
+              <View className="flex-row items-center justify-between pt-10 px-5">
+                <View className="ml-2"><icons.logo width={38} height={38}/></View>
                 <View className="flex-1 items-center">
                   <Text className="text-white text-[20px] font-semibold">
                     Iniciar sesión

@@ -13,8 +13,15 @@ module.exports = {
             400: "#181818",
             500: "#979797",
             600: "#ECECEC",
-            700: "#FF0000"
+            700: "#FF0000",
+            800: "#8B8B8B"
         },
+        green: {
+            DEFAULT: "#0F9946",
+            100: "rgba(138, 245, 168, 0.5)",
+        },
+        customblue: "#5459EA",
+        violet: "#505470",
         inputborder: "#CECECE",
       },
     },

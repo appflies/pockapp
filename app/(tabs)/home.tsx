@@ -14,7 +14,7 @@ const Home = () => {
                 {user ? (
                     <>
                         <Text className="text-white">ID: {user.usuario_id}</Text>
-                        <Text className="text-white">Usuario: {user.usuario}</Text>
+                        <Text className="text-white">Usuario: {user.sucursal}</Text>
                         <Text className="text-white">Email: {user.email}</Text>
                     </>
                 ) : (

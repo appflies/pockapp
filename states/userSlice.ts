@@ -1,4 +1,4 @@
-import { UserType } from "@/types/user";
+import { UserType } from "@/@types/user";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState: UserType | null = null;
