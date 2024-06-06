@@ -11,6 +11,7 @@ import { router } from "expo-router";
 import DateTimePicker from 'react-native-ui-datepicker';
 import dayjs from 'dayjs';
 import 'dayjs/locale/es';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 dayjs.locale('es');
 
@@ -18,6 +19,22 @@ export default function Calendar() {
   const [startDate, setStartDate] = useState(dayjs());
   const [endDate, setEndDate] = useState(dayjs().add(1, 'day'));
   const [isSelectingEndDate, setIsSelectingEndDate] = useState(false);
+
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+  const [items, setItems] = useState([
+    {label: 'Enero', value: 'enero'},
+    {label: 'Febrero', value: 'febrero'},
+    {label: 'Marzo', value: 'marzo'},
+    {label: 'Abril', value: 'abril'},
+    {label: 'Junio', value: 'junio'},
+    {label: 'Julio', value: 'julio'},
+    {label: 'Agosto', value: 'agosto'},
+    {label: 'Setiembre', value: 'setiembre'},
+    {label: 'Octubre', value: 'octubre'},
+    {label: 'Noviembre', value: 'noviembre'},
+    {label: 'Diciembre', value: 'diciembre'}
+  ]);
 
   const formatDisplayDate = (date) => date ? date.format('DD MMMM') : '';
   const formatFunctionDate = (date) => date ? date.format('DD-MM-YYYY') : '';
@@ -56,7 +73,7 @@ export default function Calendar() {
         </View>
       </View>
 
-      <View className="mt-4 w-full bg-white pt-14 rounded-tl-[24px] rounded-tr-[24px]">
+      <View className="mt-4 h-full w-full bg-white pt-14 rounded-tl-[24px] rounded-tr-[24px]">
         <View className="bg-white ml-4 mr-4">
           <DateTimePicker
             locale="es"
@@ -80,6 +97,19 @@ export default function Calendar() {
             Cancelar
           </Text>
         </View>
+
+        <DropDownPicker
+          open={open}
+          value={value}
+          items={items}
+          setOpen={setOpen}
+          setValue={setValue}
+          setItems={setItems}
+          placeholder="Mes"
+          ContainerStyle={{
+            border: "none"
+          }}
+        />
       </View>
     </SafeAreaView>
   );
