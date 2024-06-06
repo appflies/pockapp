@@ -14,6 +14,8 @@ import Collapsible from 'react-native-collapsible';
 import { useGetOrdersQuery } from "@/services/order.service";
 import TicketButton from "@/components/TicketButton";
 import { router } from "expo-router";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
 
 type OrderProps = {
   item: OrderType;
@@ -96,7 +98,15 @@ const Item = React.memo(({ item, isCollapsed, onToggleCollapse }: OrderProps) =>
 ));
 
 export default function Orders() {
-  const { data, error, isLoading } = useGetOrdersQuery({ desde: "25-02-2024", hasta: "13-05-2024", per_page: 50, page: 1 });
+  const filter = useSelector((state: RootState) => state.filter);
+
+  const { data, error, isLoading } = useGetOrdersQuery(
+    {
+        desde: filter.desde,
+        hasta: filter.hasta,
+        per_page: 50,
+        page: 1
+    });
   const [collapsedItemId, setCollapsedItemId] = useState<number | null>(null);
 
   const handleToggleCollapse = useCallback((id: number) => {
@@ -114,7 +124,15 @@ export default function Orders() {
   if (error) {
     return (
       <SafeAreaView className="h-full flex-1">
-        <Text className="text-center mt-10">Error al cargar datos</Text>
+          <TitleBar icon={<icons.logo width={38} height={38} />} />
+          <SearchBar />
+          <View className="flex justify-center items-center mt-1">
+            <View className="border-custom-border mb-8 mt-[-33px] bg-[#F7F8FA] w-full text-center h-[54px] flex items-center justify-center">
+              <Text className="text-secondary-100 font-mobold">ORDENES PROCESADAS</Text>
+            </View>
+          </View>
+          <View className="bg-white h-full mt-[-33px]">
+          </View>
       </SafeAreaView>
     );
   }

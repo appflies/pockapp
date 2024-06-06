@@ -11,6 +11,8 @@ import { router } from "expo-router";
 import DateTimePicker from 'react-native-ui-datepicker';
 import dayjs from 'dayjs';
 import 'dayjs/locale/es';
+import { setFilter } from '@/states/filterSlice';
+import { useDispatch } from 'react-redux';
 
 dayjs.locale('es');
 
@@ -18,6 +20,8 @@ export default function Calendar() {
   const [startDate, setStartDate] = useState(dayjs());
   const [endDate, setEndDate] = useState(dayjs().add(1, 'day'));
   const [isSelectingEndDate, setIsSelectingEndDate] = useState(false);
+
+  const dispatch = useDispatch();
 
   const [dateLabel, setDateLabel] = useState("desde - hasta");
   const [error, setError] = useState("");
@@ -32,10 +36,6 @@ export default function Calendar() {
 
     const displayStartDate = formatDisplayDate(startDate);
     const displayEndDate = formatDisplayDate(endDate);
-    const functionStartDate = formatFunctionDate(startDate);
-    const functionEndDate = formatFunctionDate(endDate);
-
-    //console.log(`Desde: "${functionStartDate}", Hasta: "${functionEndDate}"`);
 
     if (displayStartDate && displayEndDate) {
         setDateLabel(`${displayStartDate} - ${displayEndDate}`);
@@ -49,7 +49,18 @@ export default function Calendar() {
         return
       }
 
+      const functionStartDate = formatFunctionDate(startDate);
+      const functionEndDate = formatFunctionDate(endDate);
 
+      const customFilter = {
+        desde: functionStartDate,
+        hasta: functionEndDate,
+        per_page: 50,
+        page: 1
+      }
+
+      dispatch(setFilter(customFilter));
+      router.push('/orders');
   }
 
   const onCancelHandler = () => {
@@ -105,19 +116,15 @@ export default function Calendar() {
 
         <View className="ml-4 mt-4 mb-4">
             <Text className="text-secondary-900 font-posemibold">Indicar fechas entrada y salida</Text>
-            <Text>{dateLabel}</Text>
+            <Text className="font-pomedium text-[14px] ml-2 mt-1">{dateLabel}</Text>
         </View>
 
         <View className="flex items-center mt-5">
             <TouchableOpacity onPress={onSubmitHandler}>
-                <View className="bg-blue rounded-[20px] min-w-[80%] flex items-center justify-center">
+                <View className="bg-blues rounded-[20px] min-w-[80%] flex items-center justify-center">
                     <Text className="text-white p-3">FINALIZAR</Text>
                 </View>
             </TouchableOpacity>
-        </View>
-
-        <View>
-            <Text>{error}</Text>
         </View>
       </View>
     </SafeAreaView>
