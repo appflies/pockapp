@@ -57,12 +57,12 @@ const Item = React.memo(({ item, isCollapsed, onToggleCollapse }: OrderProps) =>
       <View className="h-[6px] bg-secondary-600 w-full "></View>
 
       <View className="flex-row justify-between mt-2 pl-4 pr-2">
-          <Text className="text-pomedium text-secondary-800 mt-[1px]">
+          <Text className="font-pomedium text-secondary-800 mt-[1px]">
             ORDER ID: {item.order_id}
           </Text>
 
-          <View className="bg-green-100  rounded-[18px] w-[98px] flex items-center justify-center h-[22px]">
-              <Text className="text-green mt-[-1.8px]">Finalizado</Text>
+          <View className="mt-[1.4px] bg-green-100 rounded-[18px] w-[98px] flex items-center justify-center h-[22px]">
+              <Text className="text-green mt-[0px] font-poregular">Finalizado</Text>
           </View>
       </View>
 
@@ -70,11 +70,11 @@ const Item = React.memo(({ item, isCollapsed, onToggleCollapse }: OrderProps) =>
 
         <View className="flex-row justify-between ml-4 mr-4">
             <View className="flex-row mt-[9px]">
-                <Text className="text-secondary-800 text-pomedium">
+                <Text className="text-secondary-800 font-pomedium">
                     Telefono:
                 </Text>
 
-                <Text className="text-posemibold font-bold text-violet ml-2 text-[16px] mt-[-1.5px]">
+                <Text className="font-posemibold font-bold text-violet ml-2 text-[16px] mt-[-1.5px]">
                     {item.telephone}
                 </Text>
             </View>

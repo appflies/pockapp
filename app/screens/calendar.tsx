@@ -19,6 +19,9 @@ export default function Calendar() {
   const [endDate, setEndDate] = useState(dayjs().add(1, 'day'));
   const [isSelectingEndDate, setIsSelectingEndDate] = useState(false);
 
+  const [dateLabel, setDateLabel] = useState("desde - hasta");
+  const [error, setError] = useState("");
+
   const formatDisplayDate = (date) => date ? date.format('DD MMMM') : '';
   const formatFunctionDate = (date) => date ? date.format('DD-MM-YYYY') : '';
 
@@ -32,9 +35,28 @@ export default function Calendar() {
     const functionStartDate = formatFunctionDate(startDate);
     const functionEndDate = formatFunctionDate(endDate);
 
-    console.log(`Start Date: ${displayStartDate}, End Date: ${displayEndDate}`);
-    console.log(`Desde: "${functionStartDate}", Hasta: "${functionEndDate}"`);
+    //console.log(`Desde: "${functionStartDate}", Hasta: "${functionEndDate}"`);
+
+    if (displayStartDate && displayEndDate) {
+        setDateLabel(`${displayStartDate} - ${displayEndDate}`);
+    } else if (displayStartDate) {
+        setDateLabel(`${displayStartDate} - `)
+    }
   };
+
+  const onSubmitHandler = () => {
+      if (!startDate || !endDate) {
+        return
+      }
+
+
+  }
+
+  const onCancelHandler = () => {
+    setStartDate(null);
+    setEndDate(null);
+    setIsSelectingEndDate(false);
+  }
 
   return (
     <SafeAreaView>
@@ -56,7 +78,7 @@ export default function Calendar() {
         </View>
       </View>
 
-      <View className="mt-4 w-full bg-white pt-14 rounded-tl-[24px] rounded-tr-[24px]">
+      <View className="mt-4 w-full h-full bg-white pt-14 rounded-tl-[24px] rounded-tr-[24px]">
         <View className="bg-white ml-4 mr-4">
           <DateTimePicker
             locale="es"
@@ -70,15 +92,32 @@ export default function Calendar() {
             weekDaysContainerStyle={{ borderBottomWidth: 0 }}
             headerTextContainerStyle={{ justifyContent: 'center' }}
             headerTextStyle={{ fontSize: 20 }}
-            headerButtonStyle={{ display: 'none' }}
-            headerButtonColor="transparent"
           />
         </View>
 
-        <View className="ml-14 mt-4 mb-4">
-          <Text>
-            Cancelar
-          </Text>
+        <View className="ml-14 mt-7 mb-4">
+          <TouchableOpacity onPress={onCancelHandler}>
+              <Text className="font-moregular text-[16px]">
+                Cancelar
+              </Text>
+          </TouchableOpacity>
+        </View>
+
+        <View className="ml-4 mt-4 mb-4">
+            <Text className="text-secondary-900 font-posemibold">Indicar fechas entrada y salida</Text>
+            <Text>{dateLabel}</Text>
+        </View>
+
+        <View className="flex items-center mt-5">
+            <TouchableOpacity onPress={onSubmitHandler}>
+                <View className="bg-blue rounded-[20px] min-w-[80%] flex items-center justify-center">
+                    <Text className="text-white p-3">FINALIZAR</Text>
+                </View>
+            </TouchableOpacity>
+        </View>
+
+        <View>
+            <Text>{error}</Text>
         </View>
       </View>
     </SafeAreaView>
