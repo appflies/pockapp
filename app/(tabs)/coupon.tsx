@@ -62,7 +62,7 @@ export default function Coupons() {
        page: 1
    });
 
-   console.log(data.rows)
+   console.log(data)
 
    if (isLoading) {
         return (
