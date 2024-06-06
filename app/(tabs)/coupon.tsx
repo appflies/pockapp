@@ -10,7 +10,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { icons, images } from "@/constants";
 import { CouponDto, CouponData } from "../_actions/coupons/getCoupons";
-import  Rating from 'react-native-easy-rating';
+import { Rating } from '@kolking/react-native-rating';
 import SearchBar from "@/components/SearchBar";
 
 type CouponProps = {
@@ -36,13 +36,8 @@ const Item = ({ item }: CouponProps) => (
                     </Text>
                   </View>
 
-                  <View className="mt-[-20px]">
-                    <Rating
-                      rating={3}
-                      max={3}
-                      iconWidth={24}
-                      iconHeight={24}
-                     />
+                  <View className="mt-[-12px]">
+                    <Rating size={20} rating={3}  />
                   </View>
                 </View>
               </View>
