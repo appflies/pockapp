@@ -1,8 +1,10 @@
 import { View, Text, TouchableOpacity } from "react-native";
+import { router } from "expo-router";
 
 export default function TicketButton({containerStyles, textStyles}) {
     return (
         <TouchableOpacity
+            onPress={() => router.push('screens/ticket')}
             className={`bg-customblue rounded-[20px] h-[42px] w-[125px] justify-center items-center ${containerStyles}`}
         >
             <View>

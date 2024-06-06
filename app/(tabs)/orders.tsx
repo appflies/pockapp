@@ -13,6 +13,7 @@ import TitleBar from "@/components/TitleBar";
 import Collapsible from 'react-native-collapsible';
 import { useGetOrdersQuery } from "@/services/order.service";
 import TicketButton from "@/components/TicketButton";
+import { router } from "expo-router";
 
 type OrderProps = {
   item: OrderType;
@@ -46,29 +47,29 @@ const Item = React.memo(({ item, isCollapsed, onToggleCollapse }: OrderProps) =>
             </Text>
           </View>
 
-          <Text className="mt-[-7px] text-primary font-mosemibold text-[12px]">
+          <Text className="mt-[-7px] text-primary font-mosemibold text-[12px] mb-3">
             Mesa: {item.mesa}
           </Text>
       </View>
     </TouchableOpacity>
 
     <Collapsible collapsed={isCollapsed}>
-      <View className="h-[6px] bg-secondary-600 w-full mt-4"></View>
+      <View className="h-[6px] bg-secondary-600 w-full "></View>
 
       <View className="flex-row justify-between mt-2 pl-4 pr-2">
-          <Text className="text-pomedium text-secondary-800 mt-1">
+          <Text className="text-pomedium text-secondary-800 mt-[1px]">
             ORDER ID: {item.order_id}
           </Text>
 
-          <View className="bg-green-100  rounded-[18px] w-[98px] flex items-center justify-center h-[26px]">
-              <Text className="text-green">Finalizado</Text>
+          <View className="bg-green-100  rounded-[18px] w-[98px] flex items-center justify-center h-[22px]">
+              <Text className="text-green mt-[-1.8px]">Finalizado</Text>
           </View>
       </View>
 
       <View className="h-[6px] bg-secondary-600 w-full mt-2"></View>
 
         <View className="flex-row justify-between ml-4 mr-4">
-            <View className="flex-row mt-[8px]">
+            <View className="flex-row mt-[9px]">
                 <Text className="text-secondary-800 text-pomedium">
                     Telefono:
                 </Text>
@@ -78,20 +79,19 @@ const Item = React.memo(({ item, isCollapsed, onToggleCollapse }: OrderProps) =>
                 </Text>
             </View>
 
-            <View className="justify-end mt-[-6px]">
+            <View className="justify-end mt-[-6.5px]">
                 <View className="flex-row">
-                    <icons.call width={50} height={50}  />
-                    <icons.whatsapp width={50} height={50}  />
+                    <icons.call width={52} height={52}  />
+                    <icons.whatsapp width={52} height={52}  />
                 </View>
             </View>
         </View>
-
-        <View className="min-h-[6px] bg-secondary-600 w-full mt-[-6px] pb-[25px] pt-2">
-            <TicketButton containerStyles={"mt-5 mx-auto"} />
+        <View className="bg-secondary-600 w-full mt-[-6px] pb-[15px] pt-[17.5px]">
+            <TicketButton containerStyles={"mx-auto"} />
         </View>
-
     </Collapsible>
   </View>
+  <View className="h-[1px] bg-secondary-600 w-full"></View>
   </>
 ));
 

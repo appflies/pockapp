@@ -1,5 +1,6 @@
 import { View, Text, TextInput, Image, TouchableOpacity } from "react-native";
 import { images, icons } from "@/constants";
+import { router } from "expo-router";
 
 export default function SearchBar() {
     return (
@@ -14,9 +15,9 @@ export default function SearchBar() {
                 ></TextInput>
               </View>
 
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => router.push("/screens/calendar")}>
                  <View className="ml-3">
-                    <icons.filter width={30}/>
+                    <icons.filter width={30} stroke={"#848484"}/>
                  </View>
               </TouchableOpacity>
           </View>
