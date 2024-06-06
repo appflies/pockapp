@@ -1,6 +1,7 @@
 import home from "../assets/icons/home.svg";
 import orders from "../assets/icons/orders.svg";
 import coupon from "../assets/icons/coupon.svg";
+import location from "../assets/icons/location.svg";
 import feedback from "../assets/icons/feedback.svg";
 import dashboard from "../assets/icons/dashboard.svg";
 import filter from "../assets/icons/filter.svg";
@@ -17,6 +18,7 @@ export default {
     home,
     orders,
     coupon,
+    location,
     feedback,
     dashboard,
     filter,

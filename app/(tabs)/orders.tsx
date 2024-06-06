@@ -49,7 +49,7 @@ const Item = React.memo(({ item, isCollapsed, onToggleCollapse }: OrderProps) =>
             </Text>
           </View>
 
-          <Text className="mt-[-7px] text-primary font-mosemibold text-[12px] mb-3">
+          <Text className="mt-[-7px] text-primary font-mosemibold text-[12px] mb-4">
             Mesa: {item.mesa}
           </Text>
       </View>
@@ -116,15 +116,46 @@ export default function Orders() {
   if (isLoading) {
     return (
       <SafeAreaView className="h-full flex-1">
-        <Text className="text-center mt-10">Cargando...</Text>
-      </SafeAreaView>
+        <View className="h-[95px] w-full bg-black">
+          <View className="flex-row pt-9 mr-5 justify-between items-center">
+            <View className="ml-10"><icons.logo width={38} height={38}/></View>
+            <View className="flex-row items-center">
+              <icons.dollar_circle width={28} height={28} />
+              <Text className="color-white text-[16px] ml-2 font-mosemibold">
+                Link de pago
+              </Text>
+            </View>
+          </View>
+        </View>
+        <SearchBar />
+        <View className="flex justify-center items-center mt-1">
+          <View className="border-custom-border mb-8 mt-[-33px] bg-[#F7F8FA] w-full text-center h-[54px] flex items-center justify-center">
+            <Text className="text-secondary-100 font-mobold">ORDENES PROCESADAS</Text>
+          </View>
+        </View>
+        <View className="bg-white h-full mt-[-33px]">
+            <View className="flex items-center justify-center">
+                <Text className="font-mosemibold text-[20px]">Cargando..</Text>
+            </View>
+        </View>
+    </SafeAreaView>
     );
   }
 
   if (error) {
     return (
       <SafeAreaView className="h-full flex-1">
-          <TitleBar icon={<icons.logo width={38} height={38} />} />
+          <View className="h-[95px] w-full bg-black">
+            <View className="flex-row pt-9 mr-5 justify-between items-center">
+              <View className="ml-10"><icons.logo width={38} height={38}/></View>
+              <View className="flex-row items-center">
+                <icons.dollar_circle width={28} height={28} />
+                <Text className="color-white text-[16px] ml-2 font-mosemibold">
+                  Link de pago
+                </Text>
+              </View>
+            </View>
+          </View>
           <SearchBar />
           <View className="flex justify-center items-center mt-1">
             <View className="border-custom-border mb-8 mt-[-33px] bg-[#F7F8FA] w-full text-center h-[54px] flex items-center justify-center">
@@ -147,7 +178,17 @@ export default function Orders() {
 
   return (
     <SafeAreaView className="h-full flex-1">
-      <TitleBar icon={<icons.logo width={38} height={38} />} />
+      <View className="h-[95px] w-full bg-black">
+          <View className="flex-row pt-9 mr-5 justify-between items-center">
+            <View className="ml-10"><icons.logo width={38} height={38}/></View>
+            <View className="flex-row items-center">
+              <icons.dollar_circle width={28} height={28} stroke="#ffffff" />
+              <Text className="color-white text-[16px] ml-2 font-mosemibold">
+                Link de Pago
+              </Text>
+            </View>
+          </View>
+      </View>
       <SearchBar />
 
       <View className="flex justify-center items-center mt-1">

@@ -54,15 +54,15 @@ export default function Feedback() {
     return (
         <SafeAreaView className="h-full flex-1">
             <View className="h-[95px] w-full bg-black">
-              <View className="flex-row pt-11 mr-5 justify-between items-center">
-                <View className="ml-10"><icons.logo width={30} height={30}/></View>
-                <View className="flex-row items-center">
-                  <icons.feedback width={23} stroke="#ffffff"/>
-                  <Text className="color-white text-[16px] ml-2 font-mosemibold">
-                    Feedback
-                  </Text>
+                <View className="flex-row pt-9 mr-5 justify-between items-center">
+                  <View className="ml-10"><icons.logo width={38} height={38}/></View>
+                  <View className="flex-row items-center">
+                    <icons.feedback width={28} height={28} stroke="#ffffff" />
+                    <Text className="color-white text-[16px] ml-2 font-mosemibold">
+                      Feedback
+                    </Text>
+                  </View>
                 </View>
-              </View>
             </View>
 
             <SearchBar />

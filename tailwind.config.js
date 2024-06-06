@@ -23,6 +23,13 @@ module.exports = {
         },
         blues: {
             DEFAULT: "#3629B7",
+            100: "#5459EA",
+        },
+        rojo: {
+            DEFAULT: "#FF4267",
+        },
+        negro: {
+            DEFAULT: "#343434",
         },
         customblue: "#5459EA",
         violet: "#505470",
