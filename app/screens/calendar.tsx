@@ -10,9 +10,8 @@ import { icons } from "@/constants";
 import { router } from "expo-router";
 import DateTimePicker from 'react-native-ui-datepicker';
 import dayjs from 'dayjs';
-import 'dayjs/locale/es';  // Import the Spanish locale
+import 'dayjs/locale/es';
 
-// Set the locale globally
 dayjs.locale('es');
 
 export default function Calendar() {
@@ -69,10 +68,10 @@ export default function Calendar() {
             selectedTextStyle={{ color: isSelectingEndDate ? "#fff" : "#fff" }}
             weekDaysTextStyle={{ color: 'transparent' }}
             weekDaysContainerStyle={{ borderBottomWidth: 0 }}
-            headerTextContainerStyle={{ justifyContent: 'center' }} // Center header text
-            headerTextStyle={{ fontSize: 20 }} // Adjust font size
-            headerButtonStyle={{ display: 'none' }} // Hide navigation buttons
-            headerButtonColor="transparent" // Ensure buttons are invisible if not hidden
+            headerTextContainerStyle={{ justifyContent: 'center' }}
+            headerTextStyle={{ fontSize: 20 }}
+            headerButtonStyle={{ display: 'none' }}
+            headerButtonColor="transparent"
           />
         </View>
 
