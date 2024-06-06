@@ -12,10 +12,3 @@ export interface OrderType {
     ticket: number;
     time: string;
 }
-
-export interface PaginatedOrdersResponse {
-    current_page: number;
-    per_page: number;
-    rows: OrderType[];
-    total: number;
-}

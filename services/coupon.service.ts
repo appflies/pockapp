@@ -1,12 +1,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "@/states/store";
-import { OrderType } from "@/@types/order";
+import { CouponType } from "@/@types/coupon";
 import { PaginatedResponse } from "/@/types/pagination";
 
-export const orderService = createApi({
-  reducerPath: "orderService",
+export const couponService = createApi({
+  reducerPath: "couponService",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://nicoservices.clobitech.com/pago/buscar",
+    baseUrl: "https://nicoservices.clobitech.com/cupon/buscar",
     prepareHeaders: (headers, { getState }) => {
       const token = (getState() as RootState).user.token;
       const sucursal = (getState() as RootState).user.sucursal;
@@ -17,7 +17,7 @@ export const orderService = createApi({
     },
   }),
   endpoints: (builder) => ({
-    getOrders: builder.query<PaginatedResponse, { desde: string, hasta: string, per_page: number, page: number }>({
+    getCoupons: builder.query<PaginatedResponse, { desde: string, hasta: string, per_page: number, page: number }>({
       query: ({ desde, hasta, per_page, page }) => ({
         url: `/${desde}/${hasta}/${per_page}/${page}`,
         method: "GET",
@@ -26,4 +26,4 @@ export const orderService = createApi({
   }),
 });
 
-export const { useGetOrdersQuery } = orderService;
+export const { useGetCouponsQuery } = couponService;

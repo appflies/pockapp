@@ -9,15 +9,19 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { icons, images } from "@/constants";
-import { CouponDto, CouponData } from "../_actions/coupons/getCoupons";
 import { Rating } from '@kolking/react-native-rating';
 import SearchBar from "@/components/SearchBar";
+import { useGetCouponsQuery } from "@/services/coupon.service";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
+import { router } from "expo-router";
+import { CouponType } from "@/@types/coupon";
 
 type CouponProps = {
-  item: CouponDto;
+  item: CouponType;
 };
 
-const renderCoupons = ({ item }: { item: CouponDto }) => {
+const renderCoupons = ({ item }: { item: CouponType }) => {
   return <Item item={item} />;
 };
 
@@ -27,7 +31,7 @@ const Item = ({ item }: CouponProps) => (
         <TouchableOpacity>
             <View className="px-4">
                 <Text className="text-secondary-100 font-posemibold text-[17px]">
-                  {item.name}
+                  {item.customer_name}
                 </Text>
                 <View className="flex-row justify-between">
                   <View className="flex-row">
@@ -47,7 +51,39 @@ const Item = ({ item }: CouponProps) => (
     </>
 );
 
-export default function Coupon() {
+export default function Coupons() {
+   const filter = useSelector((state: RootState) => state.filter);
+
+   const { data, error, isLoading } = useGetCouponsQuery(
+   {
+       desde: filter.desde,
+       hasta: filter.hasta,
+       per_page: 50,
+       page: 1
+   });
+
+   console.log(data.rows)
+
+   if (isLoading) {
+        return (
+            <SafeAreaView>
+                <View>
+                    <Text className="text-white">Loading...</Text>
+                </View>
+            </SafeAreaView>
+        );
+   }
+
+   if (error) {
+       return (
+           <SafeAreaView>
+               <View>
+                   <Text className="text-white">ERROR</Text>
+               </View>
+           </SafeAreaView>
+       );
+  }
+
     return (
         <SafeAreaView className="h-full flex-1">
             <View className="h-[95px] w-full bg-black">
@@ -71,9 +107,9 @@ export default function Coupon() {
             </View>
 
             <FlatList
-                data={CouponData}
+                data={data?.rows}
                 renderItem={renderCoupons}
-                keyExtractor={item => item.id.toString()}
+                keyExtractor={item => item.cupon_id.toString()}
                 contentContainerStyle={{ paddingBottom: 100, paddingHorizontal: 0 }}
                 className="flex-1 bg-white mt-[-33px]"
              />

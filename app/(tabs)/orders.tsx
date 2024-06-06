@@ -7,7 +7,8 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useState, useCallback } from 'react';
 import { icons } from "@/constants";
-import { OrderType, PaginatedOrdersResponse } from "@/types/order";
+import { OrderType } from "@/@types/order";
+import { PaginatedResponse } from "@/@types/pagination";
 import SearchBar from "@/components/SearchBar";
 import TitleBar from "@/components/TitleBar";
 import Collapsible from 'react-native-collapsible';
