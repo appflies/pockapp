@@ -33,7 +33,7 @@ const renderCoupons = ({ item }: { item: CouponType }) => {
 const Item = ({ item }: CouponProps) => (
     <>
       <View className="mt-4 w-full bg-white">
-        <TouchableOpacity onPress={() => router.push("/screens/reviews")}>
+        <TouchableOpacity onPress={() => router.push("/screens/coupon-tabs")}>
             <View className="px-4">
                 <Text className="text-secondary-100 font-posemibold text-[17px]">
                   {item.customer_name}

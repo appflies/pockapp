@@ -24,6 +24,7 @@ module.exports = {
         blues: {
             DEFAULT: "#3629B7",
             100: "#5459EA",
+            200: "#192A3E",
         },
         rojo: {
             DEFAULT: "#FF4267",
