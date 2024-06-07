@@ -1,8 +1,4 @@
-import {
-  Text,
-  View,
-  TouchableOpacity
-} from "react-native";
+import { Text, View, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useState } from 'react';
 import Entypo from '@expo/vector-icons/Entypo';
@@ -11,12 +7,21 @@ import { router } from "expo-router";
 import DateTimePicker from 'react-native-ui-datepicker';
 import dayjs from 'dayjs';
 import 'dayjs/locale/es';
-import { setFilter } from '@/states/filterSlice';
-import { useDispatch } from 'react-redux';
+import { RootState } from "@/states/store";
+import { useDispatch, useSelector } from 'react-redux';
+import { setOrders, setFilters as orderFilter } from "@/states/orderSlice";
+import { setCoupon, setFilters as couponFilter } from "@/states/couponSlice";
+import { getOrders } from "@/api/orders";
+import { getCoupons } from "@/api/coupons";
 
 dayjs.locale('es');
 
 export default function Calendar() {
+  const filter = useSelector((state: RootState) => state.filter);
+  const user = useSelector((state: RootState) => state.user);
+
+  const screen = filter.screen;
+
   const [startDate, setStartDate] = useState(dayjs());
   const [endDate, setEndDate] = useState(dayjs().add(1, 'day'));
   const [isSelectingEndDate, setIsSelectingEndDate] = useState(false);
@@ -44,23 +49,52 @@ export default function Calendar() {
     }
   };
 
-  const onSubmitHandler = () => {
-      if (!startDate || !endDate) {
-        return
+  const onGoBackHandler = () => {
+    if (screen == "orders") {
+        router.push("/orders")
+    } else if (screen == "coupons") {
+        router.push("/coupon")
+    }
+  }
+
+  const onSubmitHandler = async () => {
+    if (!startDate || !endDate) {
+      return;
+    }
+
+    const functionStartDate = formatFunctionDate(startDate);
+    const functionEndDate = formatFunctionDate(endDate);
+
+    const filters = {
+      desde: functionStartDate,
+      hasta: functionEndDate,
+      per_page: 50,
+      page: 1
+    }
+
+    if (screen == "orders") {
+      try {
+        const orders = await getOrders(filters, user);
+        dispatch(setOrders(orders.rows));
+        dispatch(orderFilter(filters));
+        router.push('/orders');
+
+      } catch (error) {
+        console.log(error)
       }
+    }
 
-      const functionStartDate = formatFunctionDate(startDate);
-      const functionEndDate = formatFunctionDate(endDate);
+    if (screen == "coupons") {
+        try {
+            const coupons = await getCoupons(filters, user);
+            dispatch(setCoupon(coupons.rows));
+            dispatch(couponFilter(filters));
+            router.push('/coupon');
 
-      const customFilter = {
-        desde: functionStartDate,
-        hasta: functionEndDate,
-        per_page: 50,
-        page: 1
-      }
-
-      dispatch(setFilter(customFilter));
-      router.push('/orders');
+        } catch(error) {
+            console.log(error);
+        }
+    }
   }
 
   const onCancelHandler = () => {
@@ -73,7 +107,7 @@ export default function Calendar() {
     <SafeAreaView>
       <View className="w-full bg-black">
         <View className="flex-row pt-9 mr-5 justify-between items-center">
-          <TouchableOpacity onPress={() => router.push('/orders')}>
+          <TouchableOpacity onPress={() => onGoBackHandler()}>
             <View className="ml-2">
               <Entypo name="chevron-left" size={30} color="white" />
             </View>

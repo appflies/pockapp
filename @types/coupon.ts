@@ -1,4 +1,4 @@
-export interface CouponType {
+export type CouponType = {
   cupon_id: number;
   cupon_no: string;
   customer_name: string;
@@ -8,4 +8,15 @@ export interface CouponType {
   sucursal: string;
   telephone: string;
   time: string;
-}
+};
+
+export type CouponState = {
+  coupons: CouponType[] | null;
+  cupon_id: number;
+  filters: {
+    desde: string;
+    hasta: string;
+    per_page: number;
+    page: number;
+  };
+};

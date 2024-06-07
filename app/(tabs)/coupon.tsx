@@ -10,25 +10,30 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { icons, images } from "@/constants";
 import { Rating } from '@kolking/react-native-rating';
-import SearchBar from "@/components/SearchBar";
-import { useGetCouponsQuery } from "@/services/coupon.service";
-import { useSelector } from "react-redux";
 import { RootState } from "@/store";
+import { useDispatch, useSelector } from "react-redux";
 import { router } from "expo-router";
 import { CouponType } from "@/@types/coupon";
+import { setFilter } from "@/states/filterSlice";
+import { setCoupon } from "@/api/orders";
 
 type CouponProps = {
   item: CouponType;
 };
 
 const renderCoupons = ({ item }: { item: CouponType }) => {
-  return <Item item={item} />;
+  const customerName = item.customer_name;
+
+  const maxNameLength = 15;
+  const abbreviatedName = customerName.length > maxNameLength ? `${customerName.substring(0, maxNameLength)}..` : customerName;
+
+  return <Item item={{ ...item, customer_name: abbreviatedName }} />;
 };
 
 const Item = ({ item }: CouponProps) => (
     <>
       <View className="mt-4 w-full bg-white">
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => router.push("/screens/reviews")}>
             <View className="px-4">
                 <Text className="text-secondary-100 font-posemibold text-[17px]">
                   {item.customer_name}
@@ -36,53 +41,30 @@ const Item = ({ item }: CouponProps) => (
                 <View className="flex-row justify-between">
                   <View className="flex-row">
                     <Text className="text-primary mr-1 font-mosemibold text-[12px] mt-[-2px] mb-4">
-                      {item.amount}
+                     $13.30
                     </Text>
                   </View>
 
-                  <View className="mt-[-12px]">
+                  <View className="mt-[-18px]">
                     <Rating size={20} rating={3}  />
                   </View>
                 </View>
               </View>
          </TouchableOpacity>
       </View>
-      <View className="h-[1px] bg-white w-full"></View>
+      <View className="h-[1px] bg-secondary-600 w-full"></View>
     </>
 );
 
 export default function Coupons() {
+   const dispatch = useDispatch();
    const filter = useSelector((state: RootState) => state.filter);
+   const data = useSelector((state: RootState) => state.coupon.coupons);
 
-   const { data, error, isLoading } = useGetCouponsQuery(
-   {
-       desde: filter.desde,
-       hasta: filter.hasta,
-       per_page: 50,
-       page: 1
-   });
-
-   console.log(data)
-
-   if (isLoading) {
-        return (
-            <SafeAreaView>
-                <View>
-                    <Text className="text-white">Loading...</Text>
-                </View>
-            </SafeAreaView>
-        );
+   const onCalendarHandler = () => {
+        dispatch(setFilter({"screen": "coupons"}));
+        router.push('/screens/calendar')
    }
-
-   if (error) {
-       return (
-           <SafeAreaView>
-               <View>
-                   <Text className="text-white">ERROR</Text>
-               </View>
-           </SafeAreaView>
-       );
-  }
 
     return (
         <SafeAreaView className="h-full flex-1">
@@ -98,7 +80,24 @@ export default function Coupons() {
                 </View>
             </View>
 
-            <SearchBar />
+            <View className="h-[130px] px-4 bg-white rounded-tl-[24px] rounded-tr-[24px]">
+                <View className="flex-row justify-center items-center pt-5">
+                    <View className="flex-row items-center p-2 pt-3 pb-3 bg-[#FFFFFF] border border-inputborder rounded-[50px]">
+                      <View className="ml-2 mb-[1px]"><icons.magnify /></View>
+                      <TextInput
+                        placeholder="Buscar nombre, teléfono o cupón"
+                        placeholderTextColor="#686881"
+                        className="border-none outline-none ml-2 mr-10 text-mosemibold"
+                      ></TextInput>
+                    </View>
+
+                    <TouchableOpacity onPress={() => onCalendarHandler()}>
+                       <View className="ml-3">
+                          <icons.filter width={30} stroke={"#848484"}/>
+                       </View>
+                    </TouchableOpacity>
+                </View>
+            </View>
 
             <View className="flex justify-center items-center mt-1">
                 <View className="border-custom-border mb-8 mt-[-33px] bg-[#F7F8FA] w-full text-center h-[54px] flex items-center justify-center" >
@@ -107,9 +106,9 @@ export default function Coupons() {
             </View>
 
             <FlatList
-                data={data?.rows}
+                data={data}
                 renderItem={renderCoupons}
-                keyExtractor={item => item.cupon_id.toString()}
+                keyExtractor={item => item.cupon_no.toString()}
                 contentContainerStyle={{ paddingBottom: 100, paddingHorizontal: 0 }}
                 className="flex-1 bg-white mt-[-33px]"
              />

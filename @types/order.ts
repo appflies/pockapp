@@ -1,5 +1,5 @@
-export interface OrderType {
-    compra_id: number;
+export type OrderType = {
+    compra_id: number | undefined;
     customer_name: string;
     date: string;
     mesa: string;
@@ -11,4 +11,20 @@ export interface OrderType {
     telephone: string;
     ticket: number;
     time: string;
-}
+    desde: string;
+    hasta: string;
+    per_page: number;
+    page: number;
+};
+
+export type OrderState = {
+    orders: OrderType[] | null;
+    compra_id: number | undefined;
+    filters: {
+        desde: string;
+        hasta: string;
+        per_page: number;
+        page: number;
+        compra_id?: number;
+    };
+};

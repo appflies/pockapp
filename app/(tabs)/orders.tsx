@@ -1,22 +1,25 @@
 import {
   Text,
+  TextInput,
   View,
   FlatList,
   TouchableOpacity
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import React, { useState, useCallback } from 'react';
-import { icons } from "@/constants";
+import React, { useState, useCallback, useEffect } from 'react';
+import { setOrders } from "@/states/orderSlice";
+import { images, icons } from "@/constants";
 import { OrderType } from "@/@types/order";
 import { PaginatedResponse } from "@/@types/pagination";
 import SearchBar from "@/components/SearchBar";
 import TitleBar from "@/components/TitleBar";
 import Collapsible from 'react-native-collapsible';
-import { useGetOrdersQuery } from "@/services/order.service";
 import TicketButton from "@/components/TicketButton";
 import { router } from "expo-router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
+import { getOrders } from "@/api/orders";
+import { setFilter } from "@/states/filterSlice";
 
 type OrderProps = {
   item: OrderType;
@@ -99,83 +102,36 @@ const Item = React.memo(({ item, isCollapsed, onToggleCollapse }: OrderProps) =>
 ));
 
 export default function Orders() {
-  const filter = useSelector((state: RootState) => state.filter);
+  const filters = useSelector((state: RootState) => state.order.filters);
+  const data = useSelector((state: RootState) => state.order.orders);
+  const dispatch = useDispatch();
 
-  const { data, error, isLoading } = useGetOrdersQuery(
-    {
-        desde: filter.desde,
-        hasta: filter.hasta,
-        per_page: 50,
-        page: 1
-    });
+  const onCalendarHandler = () => {
+    dispatch(setFilter({"screen": "orders"}));
+    router.push('/screens/calendar')
+  }
+
   const [collapsedItemId, setCollapsedItemId] = useState<number | null>(null);
 
   const handleToggleCollapse = useCallback((id: number) => {
     setCollapsedItemId((prevId) => (prevId === id ? null : id));
   }, []);
 
-  if (isLoading) {
-    return (
-      <SafeAreaView className="h-full flex-1">
-        <View className="h-[95px] w-full bg-black">
-          <View className="flex-row pt-9 mr-5 justify-between items-center">
-            <View className="ml-10"><icons.logo width={38} height={38}/></View>
-            <View className="flex-row items-center">
-              <icons.dollar_circle width={28} height={28} />
-              <Text className="color-white text-[16px] ml-2 font-mosemibold">
-                Link de pago
-              </Text>
-            </View>
-          </View>
-        </View>
-        <SearchBar />
-        <View className="flex justify-center items-center mt-1">
-          <View className="border-custom-border mb-8 mt-[-33px] bg-[#F7F8FA] w-full text-center h-[54px] flex items-center justify-center">
-            <Text className="text-secondary-100 font-mobold">ORDENES PROCESADAS</Text>
-          </View>
-        </View>
-        <View className="bg-white h-full mt-[-33px]">
-            <View className="flex items-center justify-center">
-                <Text className="font-mosemibold text-[20px]">Cargando..</Text>
-            </View>
-        </View>
-    </SafeAreaView>
-    );
-  }
+  const renderOrders = ({ item }: { item: OrderType }) => {
+    const customerName = item.customer_name;
+    const maxNameLength = 15;
+    const abbreviatedName = customerName.length > maxNameLength
+      ? `${customerName.substring(0, maxNameLength)}..`
+      : customerName;
 
-  if (error) {
     return (
-      <SafeAreaView className="h-full flex-1">
-          <View className="h-[95px] w-full bg-black">
-            <View className="flex-row pt-9 mr-5 justify-between items-center">
-              <View className="ml-10"><icons.logo width={38} height={38}/></View>
-              <View className="flex-row items-center">
-                <icons.dollar_circle width={28} height={28} />
-                <Text className="color-white text-[16px] ml-2 font-mosemibold">
-                  Link de pago
-                </Text>
-              </View>
-            </View>
-          </View>
-          <SearchBar />
-          <View className="flex justify-center items-center mt-1">
-            <View className="border-custom-border mb-8 mt-[-33px] bg-[#F7F8FA] w-full text-center h-[54px] flex items-center justify-center">
-              <Text className="text-secondary-100 font-mobold">ORDENES PROCESADAS</Text>
-            </View>
-          </View>
-          <View className="bg-white h-full mt-[-33px]">
-          </View>
-      </SafeAreaView>
+      <Item
+        item={{ ...item, customer_name: abbreviatedName }}
+        isCollapsed={collapsedItemId !== item.compra_id}
+        onToggleCollapse={handleToggleCollapse}
+      />
     );
-  }
-
-  const renderOrders = ({ item }: { item: OrderType }) => (
-    <Item
-      item={item}
-      isCollapsed={collapsedItemId !== item.compra_id}
-      onToggleCollapse={handleToggleCollapse}
-    />
-  );
+  };
 
   return (
     <SafeAreaView className="h-full flex-1">
@@ -190,7 +146,25 @@ export default function Orders() {
             </View>
           </View>
       </View>
-      <SearchBar />
+
+      <View className="h-[130px] px-4 bg-white rounded-tl-[24px] rounded-tr-[24px]">
+        <View className="flex-row justify-center items-center pt-5">
+            <View className="flex-row items-center p-2 pt-3 pb-3 bg-[#FFFFFF] border border-inputborder rounded-[50px]">
+              <View className="ml-2 mb-[1px]"><icons.magnify /></View>
+              <TextInput
+                placeholder="Buscar nombre, teléfono o cupón"
+                placeholderTextColor="#686881"
+                className="border-none outline-none ml-2 mr-10 text-mosemibold"
+              ></TextInput>
+            </View>
+
+            <TouchableOpacity onPress={() => onCalendarHandler()}>
+               <View className="ml-3">
+                  <icons.filter width={30} stroke={"#848484"}/>
+               </View>
+            </TouchableOpacity>
+        </View>
+      </View>
 
       <View className="flex justify-center items-center mt-1">
         <View className="border-custom-border mb-8 mt-[-33px] bg-[#F7F8FA] w-full text-center h-[54px] flex items-center justify-center">
@@ -198,13 +172,13 @@ export default function Orders() {
         </View>
       </View>
 
-      <FlatList
-        data={data?.rows}
-        renderItem={renderOrders}
-        keyExtractor={item => item.compra_id.toString()}
-        contentContainerStyle={{ paddingBottom: 100, paddingHorizontal: 0 }}
-        className="flex-1 bg-white mt-[-33px]"
-      />
+        <FlatList
+            data={data}
+            renderItem={renderOrders}
+            keyExtractor={item => item.compra_id.toString()}
+            contentContainerStyle={{ paddingBottom: 100, paddingHorizontal: 0 }}
+            className="flex-1 bg-white mt-[-33px]"
+          />
     </SafeAreaView>
   );
 }
