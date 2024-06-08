@@ -1,12 +1,14 @@
 import { Text, View, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Entypo from '@expo/vector-icons/Entypo';
 import { icons } from "@/constants";
 import { router } from "expo-router";
 import DateTimePicker from 'react-native-ui-datepicker';
 import dayjs from 'dayjs';
 import 'dayjs/locale/es';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
 import { RootState } from "@/states/store";
 import { useDispatch, useSelector } from 'react-redux';
 import { setOrders, setFilters as orderFilter } from "@/states/orderSlice";
@@ -15,6 +17,8 @@ import { getOrders } from "@/api/orders";
 import { getCoupons } from "@/api/coupons";
 
 dayjs.locale('es');
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 export default function Calendar() {
   const filter = useSelector((state: RootState) => state.filter);
@@ -22,17 +26,45 @@ export default function Calendar() {
 
   const screen = filter.screen;
 
+  const coupon = useSelector((state: RootState) => state.coupon);
+  const order = useSelector((state: RootState) => state.order);
+
   const [startDate, setStartDate] = useState(dayjs());
   const [endDate, setEndDate] = useState(dayjs().add(1, 'day'));
   const [isSelectingEndDate, setIsSelectingEndDate] = useState(false);
 
   const dispatch = useDispatch();
 
+  const convertDateToISO = (dateStr) => {
+    return dayjs(dateStr, 'DD-MM-YYYY').utc().format();
+  };
+
   const [dateLabel, setDateLabel] = useState("desde - hasta");
   const [error, setError] = useState("");
 
   const formatDisplayDate = (date) => date ? date.format('DD MMMM') : '';
   const formatFunctionDate = (date) => date ? date.format('DD-MM-YYYY') : '';
+
+  useEffect(() => {
+    const { desde: couponDesde, hasta: couponHasta } = coupon.filters;
+    const { desde: orderDesde, hasta: orderHasta } = order.filters;
+
+    if (screen === "coupons" && couponDesde && couponHasta) {
+        const start = dayjs(couponDesde, "DD-MM-YYYY");
+        const end = dayjs(couponHasta, "DD-MM-YYYY");
+
+        setStartDate(start);
+        setEndDate(end);
+    }
+
+    if (screen === "orders" && orderDesde && orderHasta) {
+        const start = dayjs(orderDesde, "DD-MM-YYYY");
+        const end = dayjs(orderHasta, "DD-MM-YYYY");
+
+        setStartDate(start);
+        setEndDate(end);
+    }
+  }, []);
 
   const onChangeDate = ({ startDate, endDate }) => {
     setStartDate(startDate);
@@ -45,17 +77,17 @@ export default function Calendar() {
     if (displayStartDate && displayEndDate) {
         setDateLabel(`${displayStartDate} - ${displayEndDate}`);
     } else if (displayStartDate) {
-        setDateLabel(`${displayStartDate} - `)
+        setDateLabel(`${displayStartDate} - `);
     }
   };
 
   const onGoBackHandler = () => {
-    if (screen == "orders") {
-        router.push("/orders")
-    } else if (screen == "coupons") {
-        router.push("/coupon")
+    if (screen === "orders") {
+        router.push("/orders");
+    } else if (screen === "coupons") {
+        router.push("/coupon");
     }
-  }
+  };
 
   const onSubmitHandler = async () => {
     if (!startDate || !endDate) {
@@ -70,9 +102,9 @@ export default function Calendar() {
       hasta: functionEndDate,
       per_page: 50,
       page: 1
-    }
+    };
 
-    if (screen == "orders") {
+    if (screen === "orders") {
       try {
         const orders = await getOrders(filters, user);
         dispatch(setOrders(orders.rows));
@@ -80,11 +112,11 @@ export default function Calendar() {
         router.push('/orders');
 
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     }
 
-    if (screen == "coupons") {
+    if (screen === "coupons") {
         try {
             const coupons = await getCoupons(filters, user);
             dispatch(setCoupon(coupons.rows));
@@ -95,13 +127,13 @@ export default function Calendar() {
             console.log(error);
         }
     }
-  }
+  };
 
   const onCancelHandler = () => {
     setStartDate(null);
     setEndDate(null);
     setIsSelectingEndDate(false);
-  }
+  };
 
   return (
     <SafeAreaView>

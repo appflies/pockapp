@@ -25,12 +25,14 @@ module.exports = {
             DEFAULT: "#3629B7",
             100: "#5459EA",
             200: "#192A3E",
+            300: "#858AA0",
         },
         rojo: {
             DEFAULT: "#FF4267",
         },
         negro: {
             DEFAULT: "#343434",
+            100: "#8F8F8F"
         },
         customblue: "#5459EA",
         violet: "#505470",

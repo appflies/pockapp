@@ -11,6 +11,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { icons, images } from "@/constants";
 import { FeedbackDto, FeedbackData } from "../_actions/feedback/getFeedback";
 import SearchBar from "@/components/SearchBar";
+import { router } from "expo-router";
 
 type FeedbackProps = {
   item: FeedbackDto;
@@ -20,34 +21,40 @@ const renderFeedback = ({ item }: { item: FeedbackDto }) => {
   return <Item item={item} />;
 };
 
-const Item = ({ item }: OrderProps) => (
+const Item = ({ item }: FeedbackProps) => (
+    <>
       <View className="mt-4">
-        <Text className="text-secondary-100 font-posemibold text-[16px]">
+
+        <Text className="text-secondary-100 font-posemibold text-[17px]">
           {item.name}
         </Text>
+
+
         <View className="flex-row justify-between">
-          <View className="flex-row mt-[-3px]">
-            <Text className="text-primary mr-1 font-posemibold text-[11px]">
+          <View className="flex-row mt-[-1px]">
+            <Text className="text-primary mr-1 font-posemibold text-[12px]">
               {item.ticketID}
             </Text>
-            <Text className="text-primary mr-1 font-poregular text-[11px]">
+            <Text className="text-primary mr-1 font-poregular text-[12px]">
               {item.date}
             </Text>
-            <Text className="text-primary font-moregular text-[11px]">
+            <Text className="text-primary font-moregular text-[12px]">
               {item.time}
             </Text>
           </View>
 
-          <TouchableOpacity>
-            <Text className="text-black font-posemibold text-[16px] mt-[-10px]">REDIMIR</Text>
+          <TouchableOpacity onPress={() => router.push("screens/redeem")}>
+            <Text className="text-black font-posemibold text-[17px] mt-[-10px]">REDIMIR</Text>
           </TouchableOpacity>
         </View>
 
         <Text
-          className="mt-[-2px] text-primary font-mosemibold text-[11px]">
+          className="mt-[-1px] text-primary font-mosemibold text-[12px] pb-4">
           ORDEN {item.order}
         </Text>
       </View>
+        <View className="h-[1px] bg-secondary-600 w-[110%] ml-[-5%]"></View>
+    </>
 );
 
 export default function Feedback() {

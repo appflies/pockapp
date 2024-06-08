@@ -60,6 +60,7 @@ export default function Coupons() {
    const dispatch = useDispatch();
    const filter = useSelector((state: RootState) => state.filter);
    const data = useSelector((state: RootState) => state.coupon.coupons);
+   console.log(data);
 
    const onCalendarHandler = () => {
         dispatch(setFilter({"screen": "coupons"}));
