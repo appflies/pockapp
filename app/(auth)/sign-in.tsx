@@ -8,14 +8,14 @@ import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { images, icons } from "@/constants";
 import CustomButton from "@/components/CustomButton";
-import { useSigninMutation } from "@/services/auth.service";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/states/userSlice";
 import { router } from "expo-router";
+import { login } from "@/api/auth";
 
 export default function SignIn() {
      const dispatch = useDispatch();
-     const [signin] = useSigninMutation();
+
      const [username, setUsername] = useState("");
      const [password, setPassword] = useState("");
      const [error, setError] = useState("");
@@ -32,23 +32,24 @@ export default function SignIn() {
 
      const handleSubmit = async () => {
         try {
-            const user = await signin({
+            const user = await login({
                 usuario: username,
                 password: password
-            }).unwrap();
+            });
+
             dispatch(setUser(user));
             setError("");
             router.push('/home');
         } catch (err) {
-            setError(err.data.error || "Error al iniciar sesión");
+            setError(err.response.data.error || "Error al iniciar sesión");
         }
     };
 
     return (
         <SafeAreaView className="h-full flex-1">
             <View className="h-[95px] w-full bg-black">
-              <View className="flex-row items-center justify-between pt-11 px-5">
-                <View className="ml-2"><icons.logo width={30} height={30}/></View>
+              <View className="flex-row items-center justify-between pt-10 px-5">
+                <View className="ml-2"><icons.logo width={38} height={38}/></View>
                 <View className="flex-1 items-center">
                   <Text className="text-white text-[20px] font-semibold">
                     Iniciar sesión

@@ -1,79 +1,184 @@
 import {
   Text,
-  View,
-  Image,
   TextInput,
+  View,
   FlatList,
-  TouchableHighlight,
   TouchableOpacity
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import React, { useState } from 'react';
-import { icons, images } from "@/constants";
-import { OrderDto, OrderData } from "../_actions/orders/getOrders";
+import React, { useState, useCallback, useEffect } from 'react';
+import { setOrders } from "@/states/orderSlice";
+import { images, icons } from "@/constants";
+import { OrderType } from "@/@types/order";
+import { PaginatedResponse } from "@/@types/pagination";
 import SearchBar from "@/components/SearchBar";
 import TitleBar from "@/components/TitleBar";
+import Collapsible from 'react-native-collapsible';
+import TicketButton from "@/components/TicketButton";
+import { router } from "expo-router";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store";
+import { getOrders } from "@/api/orders";
+import { setFilter } from "@/states/filterSlice";
 
 type OrderProps = {
-  item: OrderDto;
+  item: OrderType;
+  isCollapsed: boolean;
+  onToggleCollapse: (id: number) => void;
 };
 
-const renderOrders = ({ item }: { item: OrderDto }) => {
-  return <Item item={item} />;
-};
-
-const Item = ({ item }: OrderProps) => (
-      <View className="mt-4">
-      <TouchableOpacity>
+const Item = React.memo(({ item, isCollapsed, onToggleCollapse }: OrderProps) => (
+    <>
+  <View className="mt-4 w-full bg-white">
+    <TouchableOpacity onPress={() => onToggleCollapse(item.compra_id)}>
+      <View className="pl-4 pr-4">
         <Text className="text-secondary-100 font-posemibold text-[17px]">
-          {item.name}
-        </Text>
-        <View className="flex-row justify-between">
-          <View className="flex-row">
-            <Text className="text-primary mr-1 font-mosemibold text-[12px] mt-[-2px]">
-              Ticket ID: {item.ticketID} /
-            </Text>
-            <Text className="text-primary mr-1 font-moregular text-[12px] mt-[-2px]">
-              {item.date}
-            </Text>
-            <Text className="text-primary font-moregular text-[12px] mt-[-2px]">
-              {item.time}
+            {item.customer_name}
+          </Text>
+          <View className="flex-row justify-between">
+            <View className="flex-row">
+              <Text className="text-primary mr-1 font-mosemibold text-[12px] mt-[-2px]">
+                Ticket ID: {item.ticket} /
+              </Text>
+              <Text className="text-primary mr-1 font-moregular text-[12px] mt-[-2px]">
+                {item.date}
+              </Text>
+              <Text className="text-primary font-moregular text-[12px] mt-[-2px]">
+                {item.time}
+              </Text>
+            </View>
+
+            <Text className="text-secondary-100 font-posemibold text-[17px] mt-[-7px]">
+              ${item.monto}
             </Text>
           </View>
 
-          <Text className="text-secondary-100 font-posemibold text-[17px] mt-[-7px]">
-            {item.amount}
+          <Text className="mt-[-7px] text-primary font-mosemibold text-[12px] mb-4">
+            Mesa: {item.mesa}
           </Text>
-        </View>
-
-        <Text
-          className="mt-[-2px] text-primary font-mosemibold text-[12px]">
-          Mesa: {item.table}
-        </Text>
-        </TouchableOpacity>
-        <View className="h-[1px] bg-secondary-600 mt-4"></View>
       </View>
-);
+    </TouchableOpacity>
 
-export default function Orders() {
-    return (
-        <SafeAreaView className="h-full flex-1">
-            <TitleBar icon={<icons.logo width={30} height={30}/>} />
-            <SearchBar />
+    <Collapsible collapsed={isCollapsed}>
+      <View className="h-[6px] bg-secondary-600 w-full "></View>
 
-            <View className="flex justify-center items-center mt-5">
-                <View className="border-custom-border mb-8 mt-[-33px] bg-[#F7F8FA] w-full text-center h-[54px] flex items-center justify-center" >
-                  <Text className="text-secondary-100 font-mobold">ORDENES PROCESADAS</Text>
-                </View>
+      <View className="flex-row justify-between mt-2 pl-4 pr-2">
+          <Text className="font-pomedium text-secondary-800 mt-[1px]">
+            ORDER ID: {item.order_id}
+          </Text>
+
+          <View className="mt-[1.4px] bg-green-100 rounded-[18px] w-[98px] flex items-center justify-center h-[22px]">
+              <Text className="text-green mt-[0px] font-poregular">Finalizado</Text>
+          </View>
+      </View>
+
+      <View className="h-[6px] bg-secondary-600 w-full mt-2"></View>
+
+        <View className="flex-row justify-between ml-4 mr-4">
+            <View className="flex-row mt-[9px]">
+                <Text className="text-secondary-800 font-pomedium">
+                    Telefono:
+                </Text>
+
+                <Text className="font-posemibold font-bold text-violet ml-2 text-[16px] mt-[-1.5px]">
+                    {item.telephone}
+                </Text>
             </View>
 
-            <FlatList
-                data={OrderData}
-                renderItem={renderOrders}
-                keyExtractor={item => item.id.toString()}
-                contentContainerStyle={{ paddingBottom: 100, paddingHorizontal: 20 }}
-                className="flex-1 bg-white mt-[-33px]"
-             />
-        </SafeAreaView>
-      );
+            <View className="justify-end mt-[-6.5px]">
+                <View className="flex-row">
+                    <icons.call width={52} height={52}  />
+                    <icons.whatsapp width={52} height={52}  />
+                </View>
+            </View>
+        </View>
+        <View className="bg-secondary-600 w-full mt-[-6px] pb-[15px] pt-[17.5px]">
+            <TicketButton containerStyles={"mx-auto"} />
+        </View>
+    </Collapsible>
+  </View>
+  <View className="h-[1px] bg-secondary-600 w-full"></View>
+  </>
+));
+
+export default function Orders() {
+  const filters = useSelector((state: RootState) => state.order.filters);
+  const data = useSelector((state: RootState) => state.order.orders);
+  const dispatch = useDispatch();
+
+  const onCalendarHandler = () => {
+    dispatch(setFilter({"screen": "orders"}));
+    router.push('/screens/calendar')
+  }
+
+  const [collapsedItemId, setCollapsedItemId] = useState<number | null>(null);
+
+  const handleToggleCollapse = useCallback((id: number) => {
+    setCollapsedItemId((prevId) => (prevId === id ? null : id));
+  }, []);
+
+  const renderOrders = ({ item }: { item: OrderType }) => {
+    const customerName = item.customer_name;
+    const maxNameLength = 15;
+    const abbreviatedName = customerName.length > maxNameLength
+      ? `${customerName.substring(0, maxNameLength)}..`
+      : customerName;
+
+    return (
+      <Item
+        item={{ ...item, customer_name: abbreviatedName }}
+        isCollapsed={collapsedItemId !== item.compra_id}
+        onToggleCollapse={handleToggleCollapse}
+      />
+    );
+  };
+
+  return (
+    <SafeAreaView className="h-full flex-1">
+      <View className="h-[95px] w-full bg-black">
+          <View className="flex-row pt-9 mr-5 justify-between items-center">
+            <View className="ml-10"><icons.logo width={38} height={38}/></View>
+            <View className="flex-row items-center">
+              <icons.dollar_circle width={28} height={28} stroke="#ffffff" />
+              <Text className="color-white text-[16px] ml-2 font-mosemibold">
+                Link de Pago
+              </Text>
+            </View>
+          </View>
+      </View>
+
+      <View className="h-[130px] px-4 bg-white rounded-tl-[24px] rounded-tr-[24px]">
+        <View className="flex-row justify-center items-center pt-5">
+            <View className="flex-row items-center p-2 pt-3 pb-3 bg-[#FFFFFF] border border-inputborder rounded-[50px]">
+              <View className="ml-2 mb-[1px]"><icons.magnify /></View>
+              <TextInput
+                placeholder="Buscar nombre, teléfono o cupón"
+                placeholderTextColor="#686881"
+                className="border-none outline-none ml-2 mr-10 text-mosemibold"
+              ></TextInput>
+            </View>
+
+            <TouchableOpacity onPress={() => onCalendarHandler()}>
+               <View className="ml-3">
+                  <icons.filter width={30} stroke={"#848484"}/>
+               </View>
+            </TouchableOpacity>
+        </View>
+      </View>
+
+      <View className="flex justify-center items-center mt-1">
+        <View className="border-custom-border mb-8 mt-[-33px] bg-[#F7F8FA] w-full text-center h-[54px] flex items-center justify-center">
+          <Text className="text-secondary-100 font-mobold">ORDENES PROCESADAS</Text>
+        </View>
+      </View>
+
+        <FlatList
+            data={data}
+            renderItem={renderOrders}
+            keyExtractor={item => item.compra_id.toString()}
+            contentContainerStyle={{ paddingBottom: 100, paddingHorizontal: 0 }}
+            className="flex-1 bg-white mt-[-33px]"
+          />
+    </SafeAreaView>
+  );
 }

@@ -5,5 +5,6 @@
     "#999999": "{props.stroke}",
     "#000000": "{props.stroke}",
     "#ffffff": "{props.stroke}",
+    "#FFFFFF": "{props.fill}",
   }
 }

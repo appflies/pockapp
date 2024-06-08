@@ -13,12 +13,15 @@ export default function TabsLayout() {
                 left: 0,
                 right: 0,
                 height: 72,
-                elevation: 0,
                 backgroundColor: "white",
-                borderRadius: 0,
-                alignItems: "center",
-                justifyContent: "center"
-            }
+                borderTopWidth: 0,
+                shadowColor: "#000",
+                shadowOffset: { width: 0, height: -3 },
+                shadowOpacity: 0.1,
+                shadowRadius: 10,
+                elevation: 20,
+                zIndex: 10,
+            },
         }}>
             <Tabs.Screen
                 name="home"

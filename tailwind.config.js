@@ -13,8 +13,27 @@ module.exports = {
             400: "#181818",
             500: "#979797",
             600: "#ECECEC",
-            700: "#FF0000"
+            700: "#FF0000",
+            800: "#8B8B8B",
+            900: "#979797"
         },
+        green: {
+            DEFAULT: "#0F9946",
+            100: "rgba(138, 245, 168, 0.5)",
+        },
+        blues: {
+            DEFAULT: "#3629B7",
+            100: "#5459EA",
+            200: "#192A3E",
+        },
+        rojo: {
+            DEFAULT: "#FF4267",
+        },
+        negro: {
+            DEFAULT: "#343434",
+        },
+        customblue: "#5459EA",
+        violet: "#505470",
         inputborder: "#CECECE",
       },
     },
