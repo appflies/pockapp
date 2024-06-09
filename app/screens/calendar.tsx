@@ -11,7 +11,11 @@ import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import { RootState } from "@/states/store";
 import { useDispatch, useSelector } from 'react-redux';
-import { setOrders, setFilters as orderFilter } from "@/states/orderSlice";
+import {
+    setOrders,
+    setTotal as setOrderTotal,
+    setFilters as orderFilter
+} from "@/states/orderSlice";
 import { setCoupon, setFilters as couponFilter } from "@/states/couponSlice";
 import { getOrders } from "@/api/orders";
 import { getCoupons } from "@/api/coupons";
@@ -116,7 +120,7 @@ export default function Calendar() {
     const filters = {
       desde: functionStartDate,
       hasta: functionEndDate,
-      per_page: 50,
+      per_page: 10,
       page: 1
     };
 
@@ -125,8 +129,8 @@ export default function Calendar() {
         const orders = await getOrders(filters, user);
         dispatch(setOrders(orders.rows));
         dispatch(orderFilter(filters));
+        dispatch(setOrderTotal(orders.total));
         router.push('/orders');
-
       } catch (error) {
         console.log(error);
       }
@@ -138,7 +142,6 @@ export default function Calendar() {
             dispatch(setCoupon(coupons.rows));
             dispatch(couponFilter(filters));
             router.push('/coupon');
-
         } catch(error) {
             console.log(error);
         }

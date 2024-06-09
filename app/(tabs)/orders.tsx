@@ -3,6 +3,7 @@ import {
   TextInput,
   View,
   FlatList,
+  ActivityIndicator,
   TouchableOpacity
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -17,6 +18,7 @@ import Collapsible from 'react-native-collapsible';
 import TicketButton from "@/components/TicketButton";
 import { router } from "expo-router";
 import { useDispatch, useSelector } from "react-redux";
+import { setFilters as setOrderFilter } from "@/states/orderSlice";
 import { RootState } from "@/store";
 import { getOrders } from "@/api/orders";
 import { setFilter } from "@/states/filterSlice";
@@ -102,9 +104,41 @@ const Item = React.memo(({ item, isCollapsed, onToggleCollapse }: OrderProps) =>
 ));
 
 export default function Orders() {
+  const user = useSelector((state: RootState) => state.user);
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [nextPage, setNextPage] = useState(10);
   const filters = useSelector((state: RootState) => state.order.filters);
   const data = useSelector((state: RootState) => state.order.orders);
+  const total = useSelector((state: RootState) => state.order.total);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (data) {
+        setItems(data.slice(0, 10));
+    }
+  }, [data]);
+
+  const load = async () => {
+    if (data) {
+        setLoading(true);
+        if (data.length == total) {
+            setLoading(false);
+            return
+        }
+
+        if (loading) {
+            const newPage = filters.page + 1;
+            const newFilters = { ...filters, page: newPage };
+            dispatch(setOrderFilter(newFilters));
+
+            const response = await getOrders(filters, user);
+
+            setItems(prevItems => [...prevItems, ...response.rows]);
+            setLoading(false);
+        }
+    }
+  }
 
   const onCalendarHandler = () => {
     dispatch(setFilter({"screen": "orders"}));
@@ -172,13 +206,24 @@ export default function Orders() {
         </View>
       </View>
 
+      {items ?
         <FlatList
-            data={data}
-            renderItem={renderOrders}
-            keyExtractor={item => item.compra_id.toString()}
-            contentContainerStyle={{ paddingBottom: 100, paddingHorizontal: 0 }}
-            className="flex-1 bg-white mt-[-33px]"
-          />
+              data={items}
+              onEndReached={() => load()}
+              renderItem={renderOrders}
+              keyExtractor={(item, index) => `${item.telephone}_${index}`}
+              contentContainerStyle={{ paddingBottom: 90, paddingHorizontal: 0 }}
+              className="flex-1 bg-white mt-[-33px]"
+              ListFooterComponent={() => (
+              <View>
+                  {loading &&
+                  <View className="pt-4">
+                    <ActivityIndicator />
+                  </View>}
+              </View>)}
+            />
+        : null
+      }
     </SafeAreaView>
   );
 }

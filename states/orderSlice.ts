@@ -4,6 +4,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 const initialState: OrderState = {
     orders: null,
     compra_id: undefined,
+    total: undefined,
     filters: {
         desde: '',
         hasta: '',
@@ -27,9 +28,12 @@ const orderSlice = createSlice({
         },
         setCompra_id: (state, action: PayloadAction<number | undefined>) => {
             state.compra_id = action.payload;
+        },
+         setTotal: (state, action: PayloadAction<number | undefined>) => {
+            state.total = action.payload;
         }
     }
 });
 
-export const { setOrders, clearOrders, setFilters, setCompra_id } = orderSlice.actions;
+export const { setOrders, clearOrders, setFilters, setCompra_id, setTotal } = orderSlice.actions;
 export default orderSlice.reducer;

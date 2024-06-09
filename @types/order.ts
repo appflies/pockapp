@@ -20,6 +20,7 @@ export type OrderType = {
 export type OrderState = {
     orders: OrderType[] | null;
     compra_id: number | undefined;
+    total: number;
     filters: {
         desde: string;
         hasta: string;
