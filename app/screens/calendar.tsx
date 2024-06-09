@@ -17,8 +17,6 @@ import { getOrders } from "@/api/orders";
 import { getCoupons } from "@/api/coupons";
 
 dayjs.locale('es');
-dayjs.extend(utc);
-dayjs.extend(timezone);
 
 export default function Calendar() {
   const filter = useSelector((state: RootState) => state.filter);
@@ -29,40 +27,58 @@ export default function Calendar() {
   const coupon = useSelector((state: RootState) => state.coupon);
   const order = useSelector((state: RootState) => state.order);
 
-  const [startDate, setStartDate] = useState(dayjs());
-  const [endDate, setEndDate] = useState(dayjs().add(1, 'day'));
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
   const [isSelectingEndDate, setIsSelectingEndDate] = useState(false);
 
   const dispatch = useDispatch();
-
-  const convertDateToISO = (dateStr) => {
-    return dayjs(dateStr, 'DD-MM-YYYY').utc().format();
-  };
 
   const [dateLabel, setDateLabel] = useState("desde - hasta");
   const [error, setError] = useState("");
 
   const formatDisplayDate = (date) => date ? date.format('DD MMMM') : '';
   const formatFunctionDate = (date) => date ? date.format('DD-MM-YYYY') : '';
+  const dateconverter = (date) => {
+    if (date) {
+      return dayjs(date).format('YYYY-MM-DD');
+    } else {
+      return '';
+    }
+  };
 
   useEffect(() => {
-    const { desde: couponDesde, hasta: couponHasta } = coupon.filters;
-    const { desde: orderDesde, hasta: orderHasta } = order.filters;
+    if (screen == "orders" && order.filters.desde && order.filters.hasta) {
+        const { desde: orderDesde, hasta: orderHasta } = order.filters;
+        const parsedDesde = orderDesde.replace(/(\d{2})-(\d{2})-(\d{4})/, "$3-$2-$1");
+        const parsedHasta = orderHasta.replace(/(\d{2})-(\d{2})-(\d{4})/, "$3-$2-$1");
+        setStartDate(dayjs(parsedDesde));
+        setEndDate(dayjs(parsedHasta));
 
-    if (screen === "coupons" && couponDesde && couponHasta) {
-        const start = dayjs(couponDesde, "DD-MM-YYYY");
-        const end = dayjs(couponHasta, "DD-MM-YYYY");
+        const displayStartDate = formatDisplayDate(dayjs(parsedDesde));
+        const displayEndDate = formatDisplayDate(dayjs(parsedHasta));
 
-        setStartDate(start);
-        setEndDate(end);
+        if (displayStartDate && displayEndDate) {
+            setDateLabel(`${displayStartDate} - ${displayEndDate}`);
+        } else if (displayStartDate) {
+            setDateLabel(`${displayStartDate} - `)
+        }
     }
 
-    if (screen === "orders" && orderDesde && orderHasta) {
-        const start = dayjs(orderDesde, "DD-MM-YYYY");
-        const end = dayjs(orderHasta, "DD-MM-YYYY");
+    if (screen == "coupons" && coupon.filters.desde && coupon.filters.hasta) {
+        const { desde: couponDesde, hasta: couponHasta } = coupon.filters;
+        const parsedDesde = couponDesde.replace(/(\d{2})-(\d{2})-(\d{4})/, "$3-$2-$1");
+        const parsedHasta = couponHasta.replace(/(\d{2})-(\d{2})-(\d{4})/, "$3-$2-$1");
+        setStartDate(dayjs(parsedDesde));
+        setEndDate(dayjs(parsedHasta));
 
-        setStartDate(start);
-        setEndDate(end);
+        const displayStartDate = formatDisplayDate(dayjs(parsedDesde));
+        const displayEndDate = formatDisplayDate(dayjs(parsedHasta));
+
+        if (displayStartDate && displayEndDate) {
+            setDateLabel(`${displayStartDate} - ${displayEndDate}`);
+        } else if (displayStartDate) {
+            setDateLabel(`${displayStartDate} - `)
+        }
     }
   }, []);
 
@@ -77,7 +93,7 @@ export default function Calendar() {
     if (displayStartDate && displayEndDate) {
         setDateLabel(`${displayStartDate} - ${displayEndDate}`);
     } else if (displayStartDate) {
-        setDateLabel(`${displayStartDate} - `);
+        setDateLabel(`${displayStartDate} - `)
     }
   };
 
