@@ -18,14 +18,14 @@ import { CouponType } from "@/@types/coupon";
 import { setFilter } from "@/states/filterSlice";
 import { getCoupons } from "@/api/coupons";
 import React, { useState, useCallback, useEffect } from 'react';
-import { setFilters as setCouponFilter, setTelephone, setDate, setName } from "@/states/couponSlice";
+import { setFilters as setCouponFilter, setTelephone, setDate, setName, setLink } from "@/states/couponSlice";
 
 type CouponProps = {
   item: CouponType;
-  onClickHandler: (telephone: string, date: string) => void;
+  onClickHandler: (telephone: string, date: string, link: string) => void;
 };
 
-const renderCoupons = ({ item, onClickHandler }: { item: CouponType, onClickHandler: (telephone: string, date: string, name: string) => void }) => {
+const renderCoupons = ({ item, onClickHandler }: { item: CouponType, onClickHandler: (telephone: string, date: string, name: string, link: string) => void }) => {
   const customerName = item.customer_name;
 
   const maxNameLength = 15;
@@ -37,7 +37,7 @@ const renderCoupons = ({ item, onClickHandler }: { item: CouponType, onClickHand
 const Item = React.memo(({ item, onClickHandler }: CouponProps) => (
   <>
     <View className="mt-4 w-full bg-white">
-      <TouchableOpacity onPress={() => onClickHandler(item.telephone, item.date, item.customer_name)}>
+      <TouchableOpacity onPress={() => onClickHandler(item.telephone, item.date, item.customer_name, item.link)}>
         <View className="px-4">
           <Text className="text-secondary-100 font-posemibold text-[17px]">
             {item.customer_name}
@@ -97,10 +97,11 @@ export default function Coupons() {
     }
   }
 
-  const onClickHandler = (phone: string, date: string, name: string) => {
+  const onClickHandler = (phone: string, date: string, name: string, link: string) => {
     dispatch(setTelephone(phone));
     dispatch(setDate(date));
     dispatch(setName(name));
+    dispatch(setLink(link));
     router.push("/screens/coupon-tabs");
   }
 

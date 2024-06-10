@@ -6,6 +6,7 @@ const initialState: CouponState = {
     telephone: undefined,
     date: undefined,
     name: undefined,
+    link: undefined,
     total: 0,
     filters: {
         desde: '',
@@ -34,6 +35,9 @@ const couponSlice = createSlice({
         setName: (state, action: PayloadAction<string>) => {
             state.name = action.payload;
         },
+        setLink: (state, action: PayloadAction<string>) => {
+            state.link = action.payload;
+        },
         setFilters: (state, action: PayloadAction<Partial<CouponState["filters"]>>) => {
             state.filters = { ...state.filters, ...action.payload };
         },
@@ -43,5 +47,5 @@ const couponSlice = createSlice({
     }
 });
 
-export const { setCoupon, clearCoupon, setTelephone, setFilters, setTotal, setDate, setName } = couponSlice.actions;
+export const { setCoupon, clearCoupon, setTelephone, setFilters, setTotal, setDate, setName, setLink } = couponSlice.actions;
 export default couponSlice.reducer;

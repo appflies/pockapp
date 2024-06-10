@@ -15,10 +15,9 @@ import { images, icons } from "@/constants";
 import { OrderType } from "@/@types/order";
 import { PaginatedResponse } from "@/@types/pagination";
 import Collapsible from 'react-native-collapsible';
-import TicketButton from "@/components/TicketButton";
 import { router } from "expo-router";
 import { useDispatch, useSelector } from "react-redux";
-import { setFilters as setOrderFilter } from "@/states/orderSlice";
+import { setFilters as setOrderFilter, setTelephone, setLink } from "@/states/orderSlice";
 import { RootState } from "@/store";
 import { getOrders } from "@/api/orders";
 import { setFilter } from "@/states/filterSlice";
@@ -27,9 +26,10 @@ type OrderProps = {
   item: OrderType;
   isCollapsed: boolean;
   onToggleCollapse: (id: number) => void;
+  onTicketHandler: (link: string) => void;
 };
 
-const Item = React.memo(({ item, isCollapsed, onToggleCollapse }: OrderProps) => (
+const Item = React.memo(({ item, isCollapsed, onToggleCollapse, onTicketHandler }: OrderProps) => (
     <>
   <View className="mt-4 w-full bg-white">
     <TouchableOpacity onPress={() => onToggleCollapse(item.compra_id)}>
@@ -99,7 +99,16 @@ const Item = React.memo(({ item, isCollapsed, onToggleCollapse }: OrderProps) =>
             </View>
         </View>
         <View className="bg-secondary-600 w-full mt-[-6px] pb-[15px] pt-[17.5px]">
-            <TicketButton containerStyles={"mx-auto"} />
+            <TouchableOpacity
+                onPress={() => onTicketHandler(item.link)}
+                className={`bg-customblue rounded-[20px] h-[42px] w-[125px] justify-center items-center mx-auto`}
+            >
+                <View className="mx-auto">
+                    <Text className={`text-white font-poregular text-[16px] mx-auto`}>
+                        Ver Ticket
+                    </Text>
+                </View>
+            </TouchableOpacity>
         </View>
     </Collapsible>
   </View>
@@ -116,6 +125,12 @@ export default function Orders() {
   const data = useSelector((state: RootState) => state.order.orders);
   const total = useSelector((state: RootState) => state.order.total);
   const dispatch = useDispatch();
+
+  const onTicketHandler = (link: string) => {
+      dispatch(setLink(link));
+      dispatch(setFilter({"screen": "orders"}));
+      router.push('screens/checkout');
+  };
 
   useEffect(() => {
     if (data) {
@@ -167,6 +182,7 @@ export default function Orders() {
         item={{ ...item, customer_name: abbreviatedName }}
         isCollapsed={collapsedItemId !== item.compra_id}
         onToggleCollapse={handleToggleCollapse}
+        onTicketHandler={onTicketHandler}
       />
     );
   };

@@ -17,8 +17,6 @@ export default function Reviews() {
   const [surveys, setSurveys] = useState<SurveyType[]>([]);
   const [loading, setLoading] = useState(true);
 
-  console.log(surveys);
-
   const fetchSurvey = async () => {
     try {
       const data = await getSurveys(fecha, telephone, user);
@@ -39,7 +37,9 @@ export default function Reviews() {
   return (
     <SafeAreaView className="flex-1 bg-white h-full">
       <View className="px-4 pt-6 flex-row">
-        <Image source={images.avatar} />
+        {surveys.length > 0 && (
+            <Image source={images.avatar} />
+        )}
 
         <View className="mt-[8px] ml-6">
           {surveys.length > 0 && (
@@ -53,7 +53,7 @@ export default function Reviews() {
 
       <ScrollView className="px-4">
         {loading ? (
-          <View className="pt-8">
+          <View className="pt-8 items-center justify-center">
             <Text className="font-poregular text-[16px] text-black">Cargando encuesta...</Text>
           </View>
         ) : surveys.length === 0 ? (
@@ -61,7 +61,7 @@ export default function Reviews() {
             <Text className="font-poregular text-[16px] text-black">No hay datos para mostrar</Text>
           </View>
         ) : (
-          surveys.slice(0, 3).map((survey, index) => ( // Mostrar solo las primeras 3 encuestas
+          surveys.slice(0, 3).map((survey, index) => (
             <View key={index} className="pt-8">
               <Rating size={16} rating={3} />
               <Text className="font-poregular text-[16px] text-black">{survey.pregunta}</Text>

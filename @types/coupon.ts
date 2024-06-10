@@ -16,6 +16,7 @@ export type CouponState = {
   total: number;
   date: string;
   name: string;
+  link: string | undefined;
   filters: {
     desde: string;
     hasta: string;

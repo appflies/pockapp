@@ -5,6 +5,7 @@ const initialState: OrderState = {
     orders: null,
     telephone: undefined,
     total: undefined,
+    link: undefined,
     filters: {
         desde: '',
         hasta: '',
@@ -29,11 +30,14 @@ const orderSlice = createSlice({
         setTelephone: (state, action: PayloadAction<number | undefined>) => {
             state.telephone = action.payload;
         },
+        setLink: (state, action: PayloadAction<number | undefined>) => {
+            state.link = action.payload;
+        },
          setTotal: (state, action: PayloadAction<number | undefined>) => {
             state.total = action.payload;
         }
     }
 });
 
-export const { setOrders, clearOrders, setFilters, setTelephone, setTotal } = orderSlice.actions;
+export const { setOrders, clearOrders, setFilters, setTelephone, setTotal, setLink } = orderSlice.actions;
 export default orderSlice.reducer;

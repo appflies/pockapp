@@ -21,6 +21,7 @@ export type OrderState = {
     orders: OrderType[] | null;
     telephone: number | string | undefined;
     total: number;
+    link: string | undefined;
     filters: {
         desde: string;
         hasta: string;
