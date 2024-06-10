@@ -3,7 +3,8 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState: SurveyState = {
     surveys: null,
-    encuesta_id: undefined,
+    telephone: undefined,
+    total: undefined,
     filters: {
         desde: '',
         hasta: '',
@@ -20,8 +21,8 @@ const surveySlice = createSlice({
             state.surveys = action.payload;
         },
         clearSurvey: () => null,
-        setSurveyId: (state, action: PayloadAction<number>) => {
-            state.encuesta_id = action.payload;
+        setTelephone: (state, action: PayloadAction<number>) => {
+            state.telephone = action.payload;
         },
         setFilters: (state, action: PayloadAction<Partial<SurveyState["filters"]>>) => {
             state.filters = { ...state.filters, ...action.payload };
@@ -29,5 +30,5 @@ const surveySlice = createSlice({
     }
 });
 
-export const { setSurvey, clearSurvey, setSurveyId, setFilters } = surveySlice.actions;
+export const { setSurvey, clearSurvey, setTelephone, setFilters } = surveySlice.actions;
 export default surveySlice.reducer;

@@ -3,12 +3,12 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState: OrderState = {
     orders: null,
-    compra_id: undefined,
+    telephone: undefined,
     total: undefined,
     filters: {
         desde: '',
         hasta: '',
-        per_page: 10,
+        per_page: 50,
         page: 1,
     }
 };
@@ -26,8 +26,8 @@ const orderSlice = createSlice({
         setFilters: (state, action: PayloadAction<Partial<OrderState["filters"]>>) => {
             state.filters = { ...state.filters, ...action.payload };
         },
-        setCompra_id: (state, action: PayloadAction<number | undefined>) => {
-            state.compra_id = action.payload;
+        setTelephone: (state, action: PayloadAction<number | undefined>) => {
+            state.telephone = action.payload;
         },
          setTotal: (state, action: PayloadAction<number | undefined>) => {
             state.total = action.payload;
@@ -35,5 +35,5 @@ const orderSlice = createSlice({
     }
 });
 
-export const { setOrders, clearOrders, setFilters, setCompra_id, setTotal } = orderSlice.actions;
+export const { setOrders, clearOrders, setFilters, setTelephone, setTotal } = orderSlice.actions;
 export default orderSlice.reducer;

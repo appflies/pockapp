@@ -13,8 +13,10 @@ import call from "../assets/icons/call.svg";
 import whatsapp from "../assets/icons/whatsapp.svg";
 import star_filled from "../assets/icons/star_filled.png";
 import star_unfilled from "../assets/icons/star_unfilled.png";
+import menu from "../assets/icons/menu.svg";
 
 export default {
+    menu,
     home,
     orders,
     coupon,

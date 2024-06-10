@@ -16,9 +16,19 @@ import {
     setTotal as setOrderTotal,
     setFilters as orderFilter
 } from "@/states/orderSlice";
-import { setCoupon, setFilters as couponFilter } from "@/states/couponSlice";
+import {
+    setCoupon,
+    setTotal as setCouponTotal,
+    setFilters as couponFilter
+} from "@/states/couponSlice";
+import {
+    setCoupon as setFeedback,
+    setTotal as setFeedbackTotal,
+    setFilters as feedbackFilter
+} from "@/states/feedbackSlice";
 import { getOrders } from "@/api/orders";
 import { getCoupons } from "@/api/coupons";
+import { getFeedback } from "@/api/feedback";
 
 dayjs.locale('es');
 
@@ -30,6 +40,7 @@ export default function Calendar() {
 
   const coupon = useSelector((state: RootState) => state.coupon);
   const order = useSelector((state: RootState) => state.order);
+  const feedback = useSelector((state: RootState) => state.feedback);
 
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
@@ -84,6 +95,23 @@ export default function Calendar() {
             setDateLabel(`${displayStartDate} - `)
         }
     }
+
+    if (screen == "feedback" && feedback.filters.desde && feedback.filters.hasta) {
+        const { desde: couponDesde, hasta: couponHasta } = feedback.filters;
+        const parsedDesde = couponDesde.replace(/(\d{2})-(\d{2})-(\d{4})/, "$3-$2-$1");
+        const parsedHasta = couponHasta.replace(/(\d{2})-(\d{2})-(\d{4})/, "$3-$2-$1");
+        setStartDate(dayjs(parsedDesde));
+        setEndDate(dayjs(parsedHasta));
+
+        const displayStartDate = formatDisplayDate(dayjs(parsedDesde));
+        const displayEndDate = formatDisplayDate(dayjs(parsedHasta));
+
+        if (displayStartDate && displayEndDate) {
+            setDateLabel(`${displayStartDate} - ${displayEndDate}`);
+        } else if (displayStartDate) {
+            setDateLabel(`${displayStartDate} - `)
+        }
+    }
   }, []);
 
   const onChangeDate = ({ startDate, endDate }) => {
@@ -120,7 +148,7 @@ export default function Calendar() {
     const filters = {
       desde: functionStartDate,
       hasta: functionEndDate,
-      per_page: 10,
+      per_page: 50,
       page: 1
     };
 
@@ -141,7 +169,20 @@ export default function Calendar() {
             const coupons = await getCoupons(filters, user);
             dispatch(setCoupon(coupons.rows));
             dispatch(couponFilter(filters));
+            dispatch(setCouponTotal(coupons.total));
             router.push('/coupon');
+        } catch(error) {
+            console.log(error);
+        }
+    }
+
+    if (screen === "feedback") {
+        try {
+            const feedbacks = await getFeedback(filters, user);
+            dispatch(setFeedback(feedbacks.rows));
+            dispatch(feedbackFilter(filters));
+            dispatch(setFeedbackTotal(feedbacks.per_page));
+            router.push('/feedback');
         } catch(error) {
             console.log(error);
         }

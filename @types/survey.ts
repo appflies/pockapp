@@ -10,7 +10,8 @@ export type SurveyType = {
 
 export type SurveyState = {
   surveys: SurveyType[] | null;
-  encuesta_id: number;
+  telephone: number | string | undefined;
+  total: number | undefined;
   filters: {
     desde: string;
     hasta: string;

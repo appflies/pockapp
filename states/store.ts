@@ -4,6 +4,7 @@ import filterReducer from "./filterSlice";
 import couponReducer from './couponSlice';
 import orderReducer from "./orderSlice";
 import surveyReducer from "./surveySlice";
+import feedbackReducer from "./feedbackSlice";
 
 export const store = configureStore({
     reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
         filter: filterReducer,
         order: orderReducer,
         survey: surveyReducer,
+        feedback: feedbackReducer,
     }
 });
 

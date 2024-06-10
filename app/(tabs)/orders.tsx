@@ -4,7 +4,9 @@ import {
   View,
   FlatList,
   ActivityIndicator,
-  TouchableOpacity
+  TouchableOpacity,
+  useWindowDimensions,
+  Linking
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useState, useCallback, useEffect } from 'react';
@@ -12,8 +14,6 @@ import { setOrders } from "@/states/orderSlice";
 import { images, icons } from "@/constants";
 import { OrderType } from "@/@types/order";
 import { PaginatedResponse } from "@/@types/pagination";
-import SearchBar from "@/components/SearchBar";
-import TitleBar from "@/components/TitleBar";
 import Collapsible from 'react-native-collapsible';
 import TicketButton from "@/components/TicketButton";
 import { router } from "expo-router";
@@ -89,8 +89,12 @@ const Item = React.memo(({ item, isCollapsed, onToggleCollapse }: OrderProps) =>
 
             <View className="justify-end mt-[-6.5px]">
                 <View className="flex-row">
-                    <icons.call width={52} height={52}  />
-                    <icons.whatsapp width={52} height={52}  />
+                    <TouchableOpacity onPress={() => Linking.openURL(`tel:${item.telephone}`)}>
+                        <icons.call width={52} height={52}  />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => Linking.openURL(`https://wa.me/${item.telephone}`)}>
+                        <icons.whatsapp width={52} height={52}  />
+                    </TouchableOpacity>
                 </View>
             </View>
         </View>
@@ -214,6 +218,11 @@ export default function Orders() {
               keyExtractor={(item, index) => `${item.telephone}_${index}`}
               contentContainerStyle={{ paddingBottom: 90, paddingHorizontal: 0 }}
               className="flex-1 bg-white mt-[-33px]"
+              removeClippedSubViews={true}
+              updateCellsBatchingPeriod={50}
+              maxToRenderPerBatch={10}
+              windowSize={2}
+              viewabilityConfig={waitForInteraction = true}
               ListFooterComponent={() => (
               <View>
                   {loading &&

@@ -1,25 +1,26 @@
 import { CouponType, CouponState } from "@/@types/coupon";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState: CouponState = {
+const initialState: FeedbackState = {
     coupons: null,
     telephone: undefined,
     date: undefined,
     name: undefined,
+    cupon_no: undefined,
     total: 0,
     filters: {
         desde: '',
         hasta: '',
-        per_page: 10,
+        per_page: 50,
         page: 1,
     }
 };
 
-const couponSlice = createSlice({
-    name: "coupon",
+const feedbackSlice = createSlice({
+    name: "feedback",
     initialState,
     reducers: {
-        setCoupon: (state, action: PayloadAction<CouponType[]>) => {
+        setCoupon: (state, action: PayloadAction<FeedbackType[]>) => {
             state.coupons = action.payload;
         },
         clearCoupon: (state) => {
@@ -34,7 +35,10 @@ const couponSlice = createSlice({
         setName: (state, action: PayloadAction<string>) => {
             state.name = action.payload;
         },
-        setFilters: (state, action: PayloadAction<Partial<CouponState["filters"]>>) => {
+        setCouponNo: (state, action: PayloadAction<string>) => {
+            state.cupon_no = action.payload;
+        },
+        setFilters: (state, action: PayloadAction<Partial<FeedbackState["filters"]>>) => {
             state.filters = { ...state.filters, ...action.payload };
         },
         setTotal: (state, action: PayloadAction<number | undefined>) => {
@@ -43,5 +47,5 @@ const couponSlice = createSlice({
     }
 });
 
-export const { setCoupon, clearCoupon, setTelephone, setFilters, setTotal, setDate, setName } = couponSlice.actions;
-export default couponSlice.reducer;
+export const { setCoupon, clearCoupon, setTelephone, setFilters, setTotal, setDate, setName, setCouponNo } = feedbackSlice.actions;
+export default feedbackSlice.reducer;
