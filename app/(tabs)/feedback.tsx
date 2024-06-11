@@ -10,14 +10,15 @@ import { FeedbackType } from "@/@types/feedback";
 import { PaginatedResponse } from "@/@types/pagination";
 import { RootState } from "@/store";
 import { getFeedback } from "@/api/feedback";
-import { setFilters as setFeedbackFilter } from "@/states/feedbackSlice";
+import { setFilters as setFeedbackFilter, setCouponNo } from "@/states/feedbackSlice";
 import { setFilter } from "@/states/filterSlice";
 
 type FeedbackProps = {
   item: FeedbackType;
+  onCouponHandler: (cupon_no: string) => void;
 };
 
-const Item = ({ item }: FeedbackProps) => (
+const Item = ({ item, onCouponHandler }: FeedbackProps) => (
   <>
     <View className="mt-4 px-4">
       <Text className="text-secondary-100 font-posemibold text-[17px]">
@@ -37,7 +38,7 @@ const Item = ({ item }: FeedbackProps) => (
           </Text>
         </View>
 
-        <TouchableOpacity onPress={() => router.push("screens/redeem")}>
+        <TouchableOpacity onPress={() => onCouponHandler(item.cupon_id)}>
           <Text className="text-black font-posemibold text-[17px] mt-[-10px]">REDIMIR</Text>
         </TouchableOpacity>
       </View>
@@ -66,6 +67,13 @@ export default function Feedback() {
       }
   }, [data]);
 
+  console.log(data)
+
+  const onCouponHandler = async (cupon_no: string) => {
+    dispatch(setCouponNo(cupon_no));
+    router.push("screens/redeem");
+  }
+
   const load = async () => {
       if (data) {
           setLoading(true);
@@ -89,7 +97,6 @@ export default function Feedback() {
 
   const onCalendarHandler = () => {
     dispatch(setFilter({ "screen": "feedback" }));
-    console.log(filters);
     router.push('/screens/calendar');
   };
 
@@ -103,6 +110,7 @@ export default function Feedback() {
       return (
         <Item
           item={{ ...item, customer_name: abbreviatedName }}
+          onCouponHandler={onCouponHandler}
         />
       );
     };
@@ -113,9 +121,9 @@ export default function Feedback() {
         <View className="flex-row pt-9 mr-5 justify-between items-center">
           <View className="ml-10"><icons.logo width={38} height={38} /></View>
           <View className="flex-row items-center">
-            <icons.feedback width={28} height={28} stroke="#ffffff" />
+            <icons.coupon width={28} height={28} stroke="#ffffff" />
             <Text className="color-white text-[16px] ml-2 font-mosemibold">
-              Feedback
+              Cupón
             </Text>
           </View>
         </View>
@@ -140,7 +148,7 @@ export default function Feedback() {
           </View>
         </View>
 
-      <View className="flex justify-center items-center mt-5">
+      <View className="flex justify-center items-center mt-1">
         <View className="border-custom-border mb-8 mt-[-33px] bg-[#F7F8FA] w-full text-center h-[54px] flex items-center justify-center">
           <Text className="text-secondary-100 font-mobold">ORDENES PROCESADAS</Text>
         </View>

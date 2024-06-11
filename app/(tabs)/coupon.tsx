@@ -75,6 +75,7 @@ export default function Coupons() {
       setItems(data.slice(0, 10));
     }
   }, [data]);
+  console.log(data)
 
   const load = async () => {
     if (data) {
@@ -116,9 +117,9 @@ export default function Coupons() {
         <View className="flex-row pt-9 mr-5 justify-between items-center">
           <View className="ml-10"><icons.logo width={38} height={38} /></View>
           <View className="flex-row items-center">
-            <icons.coupon width={28} height={28} stroke="#ffffff" />
+            <icons.feedback width={28} height={28} stroke="#ffffff" />
             <Text className="color-white text-[16px] ml-2 font-mosemibold">
-              Cupón
+              Feedback
             </Text>
           </View>
         </View>

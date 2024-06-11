@@ -17,3 +17,19 @@ export const getFeedback = async (filters: { desde: string, hasta: string, per_p
     throw new Error('Failed to fetch coupons');
   }
 };
+
+export const RedeemCoupon = async (cupon_id: string, user: UserType): Promise<CouponType[]> => {
+    try {
+        const response = await axios.put(`https://nicoservices.clobitech.com/cupon/canjear/${cupon_id}`, {}, {
+            headers: {
+                'Authorization': `Bearer ${user.token}`,
+                'Content-Type': 'application/json; charset=UTF-8',
+                'sucursal': user.sucursal,
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error redeeming coupon:', error);
+        throw error;
+    }
+};

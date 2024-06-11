@@ -11,8 +11,23 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { icons, images } from "@/constants";
 import Entypo from '@expo/vector-icons/Entypo';
 import { router } from "expo-router";
+import { useSelector, useDispatch } from "react-redux";
+import { RedeemCoupon, getFeedback } from "@/api/feedback";
+import { setCoupon as setFeedback } from "@/states/feedbackSlice";
 
 export default function Redeem() {
+    const dispatch = useDispatch();
+    const user = useSelector((state: RootState) => state.user);
+    const cupon = useSelector((state: RootState) => state.feedback.cupon_no);
+    const filters = useSelector((state: RootState) => state.feedback.filters);
+
+    const onCouponHandler = async () => {
+        const response = await RedeemCoupon(cupon, user);
+        const feedbacks = await getFeedback(filters, user);
+        dispatch(setFeedback(feedbacks.rows));
+        router.push("/feedback");
+    }
+
     return (
         <SafeAreaView>
             <View className="bg-white w-full h-full">
@@ -54,7 +69,7 @@ export default function Redeem() {
                 </View>
 
                 <TouchableOpacity className="bg-blues-100 rounded-[20px] min-h-[52px] justify-center items-center w-[80%] mx-auto mt-4"
-                    onPress={() => router.push('/screens/redeemed')}>
+                    onPress={() => onCouponHandler()}>
                     <View>
                         <Text className="text-white font-poregular text-[16px]">
                            REDIMIR AHORA

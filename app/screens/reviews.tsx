@@ -17,6 +17,8 @@ export default function Reviews() {
   const [surveys, setSurveys] = useState<SurveyType[]>([]);
   const [loading, setLoading] = useState(true);
 
+  console.log(surveys)
+
   const fetchSurvey = async () => {
     try {
       const data = await getSurveys(fecha, telephone, user);
@@ -61,7 +63,7 @@ export default function Reviews() {
             <Text className="font-poregular text-[16px] text-black">No hay datos para mostrar</Text>
           </View>
         ) : (
-          surveys.slice(0, 3).map((survey, index) => (
+          surveys.slice(0, 4).map((survey, index) => (
             <View key={index} className="pt-8">
               <Rating size={16} rating={3} />
               <Text className="font-poregular text-[16px] text-black">{survey.pregunta}</Text>
