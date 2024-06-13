@@ -1,4 +1,4 @@
-export type CouponType = {
+export type FeedbackType = {
   cupon_id: number;
   cupon_no: string;
   customer_name: string;
@@ -10,13 +10,13 @@ export type CouponType = {
   time: string;
 };
 
-export type CouponState = {
+export type FeedbackState = {
   coupons: CouponType[] | null;
   telephone: string | undefined;
   total: number;
   date: string;
   name: string;
-  link: string | undefined;
+  cupon_no: string | undefined;
   filters: {
     desde: string;
     hasta: string;

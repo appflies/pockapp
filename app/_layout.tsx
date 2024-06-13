@@ -78,9 +78,11 @@ function RootLayoutNav() {
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen name="(auth)" options={{ headerShown: false }} />
             <Stack.Screen name="search/[query]" options={{ headerShown: false }} />
-            <Stack.Screen name="screens/ticket" options={{ headerShown: false }} />
+            <Stack.Screen name="screens/checkout" options={{ headerShown: false }} />
             <Stack.Screen name="screens/calendar" options={{ headerShown: false }} />
             <Stack.Screen name="screens/coupon-tabs" options={{ headerShown: false }} />
+            <Stack.Screen name="screens/redeem" options={{ headerShown: false }} />
+            <Stack.Screen name="screens/redeemed" options={{ headerShown: false }} />
           </Stack>
         </ThemeProvider>
     </ReduxProvider>

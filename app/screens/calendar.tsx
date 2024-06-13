@@ -1,18 +1,34 @@
 import { Text, View, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Entypo from '@expo/vector-icons/Entypo';
 import { icons } from "@/constants";
 import { router } from "expo-router";
 import DateTimePicker from 'react-native-ui-datepicker';
 import dayjs from 'dayjs';
 import 'dayjs/locale/es';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
 import { RootState } from "@/states/store";
 import { useDispatch, useSelector } from 'react-redux';
-import { setOrders, setFilters as orderFilter } from "@/states/orderSlice";
-import { setCoupon, setFilters as couponFilter } from "@/states/couponSlice";
+import {
+    setOrders,
+    setTotal as setOrderTotal,
+    setFilters as orderFilter
+} from "@/states/orderSlice";
+import {
+    setCoupon,
+    setTotal as setCouponTotal,
+    setFilters as couponFilter
+} from "@/states/couponSlice";
+import {
+    setCoupon as setFeedback,
+    setTotal as setFeedbackTotal,
+    setFilters as feedbackFilter
+} from "@/states/feedbackSlice";
 import { getOrders } from "@/api/orders";
 import { getCoupons } from "@/api/coupons";
+import { getFeedback } from "@/api/feedback";
 
 dayjs.locale('es');
 
@@ -22,8 +38,12 @@ export default function Calendar() {
 
   const screen = filter.screen;
 
-  const [startDate, setStartDate] = useState(dayjs());
-  const [endDate, setEndDate] = useState(dayjs().add(1, 'day'));
+  const coupon = useSelector((state: RootState) => state.coupon);
+  const order = useSelector((state: RootState) => state.order);
+  const feedback = useSelector((state: RootState) => state.feedback);
+
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
   const [isSelectingEndDate, setIsSelectingEndDate] = useState(false);
 
   const dispatch = useDispatch();
@@ -33,6 +53,66 @@ export default function Calendar() {
 
   const formatDisplayDate = (date) => date ? date.format('DD MMMM') : '';
   const formatFunctionDate = (date) => date ? date.format('DD-MM-YYYY') : '';
+  const dateconverter = (date) => {
+    if (date) {
+      return dayjs(date).format('YYYY-MM-DD');
+    } else {
+      return '';
+    }
+  };
+
+  useEffect(() => {
+    if (screen == "orders" && order.filters.desde && order.filters.hasta) {
+        const { desde: orderDesde, hasta: orderHasta } = order.filters;
+        const parsedDesde = orderDesde.replace(/(\d{2})-(\d{2})-(\d{4})/, "$3-$2-$1");
+        const parsedHasta = orderHasta.replace(/(\d{2})-(\d{2})-(\d{4})/, "$3-$2-$1");
+        setStartDate(dayjs(parsedDesde));
+        setEndDate(dayjs(parsedHasta));
+
+        const displayStartDate = formatDisplayDate(dayjs(parsedDesde));
+        const displayEndDate = formatDisplayDate(dayjs(parsedHasta));
+
+        if (displayStartDate && displayEndDate) {
+            setDateLabel(`${displayStartDate} - ${displayEndDate}`);
+        } else if (displayStartDate) {
+            setDateLabel(`${displayStartDate} - `)
+        }
+    }
+
+    if (screen == "coupons" && coupon.filters.desde && coupon.filters.hasta) {
+        const { desde: couponDesde, hasta: couponHasta } = coupon.filters;
+        const parsedDesde = couponDesde.replace(/(\d{2})-(\d{2})-(\d{4})/, "$3-$2-$1");
+        const parsedHasta = couponHasta.replace(/(\d{2})-(\d{2})-(\d{4})/, "$3-$2-$1");
+        setStartDate(dayjs(parsedDesde));
+        setEndDate(dayjs(parsedHasta));
+
+        const displayStartDate = formatDisplayDate(dayjs(parsedDesde));
+        const displayEndDate = formatDisplayDate(dayjs(parsedHasta));
+
+        if (displayStartDate && displayEndDate) {
+            setDateLabel(`${displayStartDate} - ${displayEndDate}`);
+        } else if (displayStartDate) {
+            setDateLabel(`${displayStartDate} - `)
+        }
+    }
+
+    if (screen == "feedback" && feedback.filters.desde && feedback.filters.hasta) {
+        const { desde: couponDesde, hasta: couponHasta } = feedback.filters;
+        const parsedDesde = couponDesde.replace(/(\d{2})-(\d{2})-(\d{4})/, "$3-$2-$1");
+        const parsedHasta = couponHasta.replace(/(\d{2})-(\d{2})-(\d{4})/, "$3-$2-$1");
+        setStartDate(dayjs(parsedDesde));
+        setEndDate(dayjs(parsedHasta));
+
+        const displayStartDate = formatDisplayDate(dayjs(parsedDesde));
+        const displayEndDate = formatDisplayDate(dayjs(parsedHasta));
+
+        if (displayStartDate && displayEndDate) {
+            setDateLabel(`${displayStartDate} - ${displayEndDate}`);
+        } else if (displayStartDate) {
+            setDateLabel(`${displayStartDate} - `)
+        }
+    }
+  }, []);
 
   const onChangeDate = ({ startDate, endDate }) => {
     setStartDate(startDate);
@@ -50,12 +130,12 @@ export default function Calendar() {
   };
 
   const onGoBackHandler = () => {
-    if (screen == "orders") {
-        router.push("/orders")
-    } else if (screen == "coupons") {
-        router.push("/coupon")
+    if (screen === "orders") {
+        router.push("/orders");
+    } else if (screen === "coupons") {
+        router.push("/coupon");
     }
-  }
+  };
 
   const onSubmitHandler = async () => {
     if (!startDate || !endDate) {
@@ -70,38 +150,50 @@ export default function Calendar() {
       hasta: functionEndDate,
       per_page: 50,
       page: 1
-    }
+    };
 
-    if (screen == "orders") {
+    if (screen === "orders") {
       try {
         const orders = await getOrders(filters, user);
         dispatch(setOrders(orders.rows));
         dispatch(orderFilter(filters));
+        dispatch(setOrderTotal(orders.total));
         router.push('/orders');
-
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     }
 
-    if (screen == "coupons") {
+    if (screen === "coupons") {
         try {
             const coupons = await getCoupons(filters, user);
             dispatch(setCoupon(coupons.rows));
             dispatch(couponFilter(filters));
+            dispatch(setCouponTotal(coupons.total));
             router.push('/coupon');
-
         } catch(error) {
             console.log(error);
         }
     }
-  }
+
+    if (screen === "feedback") {
+        try {
+            const feedbacks = await getFeedback(filters, user);
+            dispatch(setFeedback(feedbacks.rows));
+            dispatch(feedbackFilter(filters));
+            dispatch(setFeedbackTotal(feedbacks.per_page));
+            router.push('/feedback');
+        } catch(error) {
+            console.log(error);
+        }
+    }
+  };
 
   const onCancelHandler = () => {
     setStartDate(null);
     setEndDate(null);
     setIsSelectingEndDate(false);
-  }
+  };
 
   return (
     <SafeAreaView>

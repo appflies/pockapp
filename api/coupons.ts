@@ -5,7 +5,7 @@ import { UserType } from "@/@types/user";
 export const getCoupons = async (filters: { desde: string, hasta: string, per_page: number, page: number }, user: UserType): Promise<CouponType[]> => {
   try {
     const { desde, hasta, per_page, page } = filters;
-    const response = await axios.get(`https://nicoservices.clobitech.com/cupon/buscar/${desde}/${hasta}/${per_page}/${page}`, {
+    const response = await axios.get(`https://nicoservices.clobitech.com/pago/buscar/${desde}/${hasta}/${per_page}/${page}`, {
       headers: {
         'Authorization': `Bearer ${user.token}`,
         'Content-Type': 'application/json; charset=UTF-8',

@@ -16,12 +16,15 @@ import { useDispatch, useSelector } from "react-redux";
 
 export default function Checkout() {
     const filter = useSelector((state: RootState) => state.filter);
-    const link = useSelector((state: RootState) => state.coupon.link);
-    const url = `https://01.gruposansir.com/${link}`;
+    const order = useSelector((state: RootState) => state.order.link);
+
+    const url = `https://01.gruposansir.com/${order}`;
 
     return (
-         <View className="w-full h-full">
-            <WebView source={{ uri: `${url}` }} />
-         </View>
+        <SafeAreaView>
+             <View className="w-full h-full">
+                <WebView source={{ uri: `${url}` }} />
+             </View>
+        </SafeAreaView>
     );
 }

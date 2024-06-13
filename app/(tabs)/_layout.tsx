@@ -54,7 +54,7 @@ export default function TabsLayout() {
                 }}
             />
             <Tabs.Screen
-                name="coupon"
+                name="feedback"
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <View style={{
@@ -69,7 +69,7 @@ export default function TabsLayout() {
                 }}
             />
             <Tabs.Screen
-                name="feedback"
+                name="coupon"
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <View style={{
@@ -83,6 +83,7 @@ export default function TabsLayout() {
                     )
                 }}
             />
+
             <Tabs.Screen
                 name="dashboard"
                 options={{
